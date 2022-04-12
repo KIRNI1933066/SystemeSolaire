@@ -28,7 +28,7 @@ public class Main extends Application {
     public static Translate zoom;
 
     public static final double ECHELLE = 400000;
-    private static final Vecteur2 POS_SOLEIL = new Vecteur2(0, 0);
+    public static final Vecteur2 POS_SOLEIL = new Vecteur2(0, 0);
     private static final int LARGEUR_SCENE = 1000;
     private static final int HAUTEUR_SCENE = 1000;
     private static double temps = 0;
@@ -66,7 +66,7 @@ public class Main extends Application {
         Planete[] planetes = new Planete[8];
         Constantes.InfoPlanetes[] infoPlanetes = Constantes.InfoPlanetes.values();
         for (int i = 0; i < planetes.length; i++) {
-            planetes[i] = new Planete(infoPlanetes[i].radius, infoPlanetes[i].color, infoPlanetes[i].periapsis, infoPlanetes[i].apoapsis, infoPlanetes[i].name, infoPlanetes[i].texture, i);
+            planetes[i] = new Planete(infoPlanetes[i].radius, infoPlanetes[i].color, infoPlanetes[i].periapsis, infoPlanetes[i].apoapsis, infoPlanetes[i].name, infoPlanetes[i].texture, i, infoPlanetes[i].masse);
             Group planeteSeule = new Group(planetes[i]);
             planeteSeule.getTransforms().addAll(
                     new Rotate(infoPlanetes[i].inclination, Rotate.X_AXIS),
@@ -154,6 +154,7 @@ public class Main extends Application {
         principal.getChildren().addAll(menu);
 
         Scene scene2D = new Scene(principal, LARGEUR_SCENE, HAUTEUR_SCENE);
+        scene2D.getStylesheets().add("file:src/main/java/com/example/systemesolaire/css/infoplanete.css");
         mouseControl(stage, scene2D, camera);
 
         stage.setScene(scene2D);

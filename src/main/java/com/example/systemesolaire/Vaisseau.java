@@ -30,7 +30,7 @@ public class Vaisseau extends Cylinder {
     }
 
     public Planete planetePlusProche() throws FileNotFoundException {
-        Planete plusProche = new Planete(0, Color.BLACK,0,0,"","",0);
+        Planete plusProche = new Planete(0, Color.BLACK,0,0,"","",0,0);
         double distanceMin = 100000000;
         double normR;
         for (Planete planete : planetes) {
