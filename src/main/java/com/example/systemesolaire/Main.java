@@ -2,8 +2,6 @@ package com.example.systemesolaire;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
@@ -14,8 +12,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.CullFace;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -28,11 +24,6 @@ import java.io.FileNotFoundException;
 
 public class Main extends Application {
 
-    private double ancreX, ancreY;
-    private double angleAncreX = 0;
-    private double angleAncreY = 0;
-    private final DoubleProperty ANGLE_X = new SimpleDoubleProperty(0);
-    private final DoubleProperty ANGLE_Y = new SimpleDoubleProperty(0);
     public static Translate pivot;
     public static Translate zoom;
 
@@ -52,21 +43,15 @@ public class Main extends Application {
 
         Image vide = new Image(new FileInputStream("Blank.jpg"));
         Image menuImage = new Image(new FileInputStream("menuimage.jpg"));
-        Image imageCiel = new Image(new FileInputStream("ciel.jpg"));
         Image back = new Image(new FileInputStream("bkg1_back.jpg"));
         Image bot = new Image(new FileInputStream("bkg1_bot.jpg"));
         Image front = new Image(new FileInputStream("bkg1_front.jpg"));
         Image left = new Image(new FileInputStream("bkg1_left.jpg"));
         Image right = new Image(new FileInputStream("bkg1_right.jpg"));
         Image top = new Image(new FileInputStream("bkg1_top.jpg"));
-
         ImageView ivMenu = new ImageView(menuImage);
+
         Sphere soleil = new Sphere(10);
-        Box ciel = new Box(80000,80000,80000);
-        ciel.setCullFace(CullFace.NONE);
-        PhongMaterial matCiel = new PhongMaterial();
-        matCiel.setDiffuseMap(imageCiel);
-        ciel.setMaterial(matCiel);
         PhongMaterial matSoleil = new PhongMaterial();
         matSoleil.setDiffuseColor(Color.ORANGE);
         matSoleil.setSelfIlluminationMap(vide);
@@ -125,8 +110,6 @@ public class Main extends Application {
         systeme.getChildren().add(pointLight);
         systeme.getChildren().add(new AmbientLight());
 
-        InfoPlanete infoPlanet = new InfoPlanete(planetes[0]);
-
         Group racine3D = new Group();
         SubScene scene3D = new SubScene(racine3D, LARGEUR_SCENE,HAUTEUR_SCENE,true, SceneAntialiasing.BALANCED);
         scene3D.setFill(Color.BLACK);
@@ -163,8 +146,8 @@ public class Main extends Application {
             racine3D.getChildren().addAll(systeme);
         });
         vb.getChildren().addAll(bouttonSysteme,bouttonVaisseau);
-        vb.setTranslateX(500);
-        vb.setTranslateY(500);
+        vb.setTranslateX(600);
+        vb.setTranslateY(450);
         vb.setAlignment(Pos.CENTER);
         vb.setSpacing(20);
         menu.getChildren().addAll(ivMenu,vb);
@@ -172,16 +155,11 @@ public class Main extends Application {
 
         Scene scene2D = new Scene(principal, LARGEUR_SCENE, HAUTEUR_SCENE);
         mouseControl(stage, scene2D, camera);
-        //initMouseControl(systeme, scene2D, stage, camera);
 
         stage.setScene(scene2D);
         stage.setFullScreen(true);
-        stage.widthProperty().addListener((observable -> {
-            scene3D.setWidth(stage.getWidth());
-        }));
-        stage.heightProperty().addListener((observable -> {
-            scene3D.setHeight(stage.getHeight());
-        }));
+        stage.widthProperty().addListener((observable -> scene3D.setWidth(stage.getWidth())));
+        stage.heightProperty().addListener((observable -> scene3D.setHeight(stage.getHeight())));
         stage.show();
     }
 
@@ -246,40 +224,8 @@ public class Main extends Application {
             }
         }));
 
-        stage.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> {
-            zoom.setZ(zoom.getZ() + mouseEvent.getDeltaY()*3);
-        });
+        stage.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> zoom.setZ(zoom.getZ() + mouseEvent.getDeltaY()*3));
     }
-
-    /*private void initMouseControl(Group group, Scene scene, Stage stage, Camera camera) {
-        Rotate rotationX;
-        Rotate rotationY;
-        group.getTransforms().addAll(
-                rotationX = new Rotate(0, Rotate.X_AXIS),
-                rotationY = new Rotate(0, Rotate.Y_AXIS)
-        );
-        rotationX.angleProperty().bind(ANGLE_X);
-        rotationY.angleProperty().bind(ANGLE_Y);
-
-        scene.setOnMousePressed(ev -> {
-            ancreX = ev.getSceneX();
-            ancreY = ev.getSceneY();
-            angleAncreX = ANGLE_X.get();
-            angleAncreY = ANGLE_Y.get();
-        });
-
-        scene.setOnMouseDragged(ev -> {
-            ANGLE_X.set(angleAncreX - (ancreY - ev.getSceneY()));
-            ANGLE_Y.set(angleAncreY + (ancreX - ev.getScreenX()));
-        });
-
-        stage.addEventHandler(ScrollEvent.SCROLL, ev -> {
-            double delta = ev.getDeltaY();
-            camera.translateXProperty().set(ev.getSceneX());
-            camera.translateYProperty().set(ev.getDeltaY());
-            camera.translateZProperty().set(camera.getTranslateZ() + delta);
-        });
-    }*/
 
     public static void main(String[] args) {
         launch();
