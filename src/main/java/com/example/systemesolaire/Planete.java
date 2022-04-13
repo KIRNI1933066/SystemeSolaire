@@ -3,6 +3,7 @@ package com.example.systemesolaire;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
+import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -76,21 +77,22 @@ public class Planete extends Sphere {
         position.XProperty().addListener((observable, oldVal, newVal) -> {
             infoPlanete.setDistanceSoleil(Vecteur2.distanceTo(position, POS_SOLEIL));
         });
+
         super.setOnMousePressed(mouseEvent -> {
             if (mouseEvent.isPrimaryButtonDown())
             {
-                if (com.example.systemesolaire.Main.pivot.xProperty().isBound())
+                if (Controlleur.getPivot().xProperty().isBound())
                 {
-                    com.example.systemesolaire.Main.pivot.xProperty().unbind();
+                    Controlleur.getPivot().xProperty().unbind();
                 }
-                if (com.example.systemesolaire.Main.pivot.yProperty().isBound())
+                if (Controlleur.getPivot().yProperty().isBound())
                 {
-                    com.example.systemesolaire.Main.pivot.yProperty().unbind();
+                    Controlleur.getPivot().yProperty().unbind();
                 }
-                com.example.systemesolaire.Main.pivot.xProperty().bind(this.translateXProperty());
-                com.example.systemesolaire.Main.pivot.yProperty().bind(this.translateYProperty());
-                zoom.setX(0);
-                zoom.setY(0);
+                Controlleur.getPivot().xProperty().bind(this.translateXProperty());
+                Controlleur.getPivot().yProperty().bind(this.translateYProperty());
+                Controlleur.getZoom().setX(0);
+                Controlleur.getZoom().setY(0);
             }
         });
         super.setOnMouseEntered(mouseEvent -> {
@@ -129,18 +131,18 @@ public class Planete extends Sphere {
         orbitPath.setOnMousePressed(mouseEvent -> {
             if (mouseEvent.isPrimaryButtonDown())
             {
-                if (com.example.systemesolaire.Main.pivot.xProperty().isBound())
+                if (Controlleur.getPivot().xProperty().isBound())
                 {
-                    com.example.systemesolaire.Main.pivot.xProperty().unbind();
+                    Controlleur.getPivot().xProperty().unbind();
                 }
-                if (com.example.systemesolaire.Main.pivot.yProperty().isBound())
+                if (Controlleur.getPivot().yProperty().isBound())
                 {
-                    com.example.systemesolaire.Main.pivot.yProperty().unbind();
+                    Controlleur.getPivot().yProperty().unbind();
                 }
-                com.example.systemesolaire.Main.pivot.xProperty().bind(this.translateXProperty());
-                com.example.systemesolaire.Main.pivot.yProperty().bind(this.translateYProperty());
-                zoom.setX(0);
-                zoom.setY(0);
+                Controlleur.getPivot().xProperty().bind(this.translateXProperty());
+                Controlleur.getPivot().yProperty().bind(this.translateYProperty());
+                Controlleur.getZoom().setX(0);
+                Controlleur.getZoom().setY(0);
             }
         });
         orbitPath.setOnMouseEntered(mouseEvent -> {

@@ -24,8 +24,6 @@ import java.io.FileNotFoundException;
 
 public class Main extends Application {
 
-    public static Translate pivot;
-    public static Translate zoom;
 
     public static final double ECHELLE = 400000;
     public static final Vecteur2 POS_SOLEIL = new Vecteur2(0, 0);
@@ -114,6 +112,7 @@ public class Main extends Application {
         SubScene scene3D = new SubScene(racine3D, LARGEUR_SCENE,HAUTEUR_SCENE,true, SceneAntialiasing.BALANCED);
         scene3D.setFill(Color.BLACK);
         scene3D.setCamera(camera);
+        systeme.getChildren().addAll(new Vaisseau(0,0,0,planetes,scene3D));
 
         Group menu = new Group();
         VBox vb = new VBox();
@@ -155,7 +154,8 @@ public class Main extends Application {
 
         Scene scene2D = new Scene(principal, LARGEUR_SCENE, HAUTEUR_SCENE);
         scene2D.getStylesheets().add("file:src/main/java/com/example/systemesolaire/css/infoplanete.css");
-        mouseControl(stage, scene2D, camera);
+        new Controlleur(stage,scene2D,camera);
+        //mouseControl(stage, scene2D, camera);
 
         stage.setScene(scene2D);
         stage.setFullScreen(true);
@@ -164,7 +164,9 @@ public class Main extends Application {
         stage.show();
     }
 
-    private void mouseControl(Stage stage, Scene scene, Camera camera)
+
+
+    /*private void mouseControl(Stage stage, Scene scene, Camera camera)
     {
         pivot = new Translate(0, 0, 0);
         zoom = new Translate(0, 0, -3000);
@@ -226,7 +228,7 @@ public class Main extends Application {
         }));
 
         stage.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> zoom.setZ(zoom.getZ() + mouseEvent.getDeltaY()*3));
-    }
+    }*/
 
     public static void main(String[] args) {
         launch();
