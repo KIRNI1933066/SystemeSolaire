@@ -34,7 +34,7 @@ public class Main extends Application {
     public static Group systeme = new Group();
     public static Group principal = new Group();
     @Override
-    public void start(Stage stage) throws FileNotFoundException {
+    public void start(Stage stage) {
 
         Image vide = new Image(Constantes.IMAGES_PATH + "Blank.jpg");
         Image menuImage = new Image(Constantes.IMAGES_PATH + "menuimage.jpg");
