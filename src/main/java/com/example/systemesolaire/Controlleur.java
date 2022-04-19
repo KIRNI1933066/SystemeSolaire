@@ -13,7 +13,6 @@ import javafx.util.Duration;
 public class Controlleur {
 
     private Stage stage;
-    //private SubScene subScene;
     private Scene scene;
     private Camera camera;
     private Vaisseau vaisseau;
@@ -28,13 +27,6 @@ public class Controlleur {
         this.vaisseau = vaisseau;
         mouseControl();
     }
-
-    public Controlleur(Vaisseau vaisseau, Scene scene) {
-        this.vaisseau = vaisseau;
-        this.scene = scene;
-        controleVaisseau();
-    }
-
 
     private void mouseControl() {
         pivot = new Translate(0, 0, 0);
@@ -100,77 +92,6 @@ public class Controlleur {
         }));
 
         stage.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> zoom.setZ(zoom.getZ() + mouseEvent.getDeltaY()*3));
-    }
-
-    private void controleVaisseau() {
-        scene.setOnKeyPressed(ev -> {
-            switch (ev.getCode()) {
-                case W-> up();
-                case S -> dowm();
-                case D -> right();
-                case A -> left();
-                case E -> zPlus();
-                case Q -> zMoins();
-            }
-        });
-    }
-
-    private void up() {
-        vaisseau.setTranslateX(vaisseau.getTranslateX()-5);
-        System.out.println("up");
-        /*
-        TranslateTransition translateTransitionRight = new TranslateTransition();
-        translateTransitionRight.setDuration(Duration.millis(200));
-        translateTransitionRight.setNode(vaisseau);
-        translateTransitionRight.setFromY(vaisseau.getTranslateY());
-        translateTransitionRight.setToY(vaisseau.getTranslateY()-5);
-        translateTransitionRight.play();
-        System.out.println("up");*/
-    }
-    private void dowm() {
-        TranslateTransition translateTransitionRight = new TranslateTransition();
-        translateTransitionRight.setDuration(Duration.millis(200));
-        translateTransitionRight.setNode(vaisseau);
-        translateTransitionRight.setFromY(vaisseau.getTranslateY());
-        translateTransitionRight.setToY(vaisseau.getTranslateY()+5);
-        translateTransitionRight.play();
-        System.out.println("down");
-    }
-    private void right() {
-        TranslateTransition translateTransitionRight = new TranslateTransition();
-        translateTransitionRight.setDuration(Duration.millis(200));
-        translateTransitionRight.setNode(vaisseau);
-        translateTransitionRight.setFromX(vaisseau.getTranslateX());
-        translateTransitionRight.setToX(vaisseau.getTranslateY()+5);
-        translateTransitionRight.play();
-        System.out.println("right");
-    }
-    private void left() {
-        TranslateTransition translateTransitionRight = new TranslateTransition();
-        translateTransitionRight.setDuration(Duration.millis(200));
-        translateTransitionRight.setNode(vaisseau);
-        translateTransitionRight.setFromX(vaisseau.getTranslateX());
-        translateTransitionRight.setToX(vaisseau.getTranslateX()-5);
-        translateTransitionRight.play();
-        System.out.println("left");
-    }
-    private void zPlus() {
-        TranslateTransition translateTransitionRight = new TranslateTransition();
-        translateTransitionRight.setDuration(Duration.millis(200));
-        translateTransitionRight.setNode(vaisseau);
-        translateTransitionRight.setFromZ(vaisseau.getTranslateX());
-        translateTransitionRight.setToZ(vaisseau.getTranslateX()+5);
-        translateTransitionRight.play();
-        System.out.println("zPlus");
-    }
-    private void zMoins() {
-        TranslateTransition translateTransitionRight = new TranslateTransition();
-        translateTransitionRight.setDuration(Duration.millis(200));
-        translateTransitionRight.setNode(vaisseau);
-        translateTransitionRight.setFromZ(vaisseau.getTranslateX());
-        translateTransitionRight.setToZ(vaisseau.getTranslateX()-5);
-        translateTransitionRight.play();
-        System.out.println("zMoins");
     }
 
 

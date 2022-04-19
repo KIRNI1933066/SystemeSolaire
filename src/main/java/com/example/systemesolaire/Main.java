@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -16,17 +15,15 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Main extends Application {
 
 
     public static final double ECHELLE = 400000;
-    public static final Vecteur2 POS_SOLEIL = new Vecteur2(0, 0);
+    public static final Vecteur3 POS_SOLEIL = new Vecteur3();
     private static final int LARGEUR_SCENE = 1000;
     private static final int HAUTEUR_SCENE = 1000;
     private static double temps = 0;
@@ -163,10 +160,6 @@ public class Main extends Application {
         scene2D.getStylesheets().add("file:src/main/java/com/example/systemesolaire/css/infoplanete.css");
         new Controlleur(stage,scene2D,camera,vaisseau);
         systeme.getChildren().addAll(vaisseau);
-        /*Button bouttonVaisseau2 = new Button("Vaisseau");
-        bouttonVaisseau2.setOnAction(ev -> systeme.getChildren().addAll(vaisseau));
-        principal.getChildren().addAll(bouttonVaisseau2);*/
-        //mouseControl(stage, scene2D, camera);
 
         stage.setScene(scene2D);
         stage.setFullScreen(true);
@@ -174,72 +167,6 @@ public class Main extends Application {
         stage.heightProperty().addListener((observable -> scene3D.setHeight(stage.getHeight())));
         stage.show();
     }
-
-
-
-    /*private void mouseControl(Stage stage, Scene scene, Camera camera)
-    {
-        pivot = new Translate(0, 0, 0);
-        zoom = new Translate(0, 0, -3000);
-        Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
-        Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
-
-        camera.getTransforms().addAll(
-                pivot,
-                rotateY,
-                rotateX,
-                zoom
-        );
-
-        Vecteur2 basePos = new Vecteur2();
-        Vecteur2 basePivot = new Vecteur2(pivot.getX(), pivot.getY());
-        Vecteur2 baseRotate = new Vecteur2();
-        scene.setOnMousePressed((mouseEvent -> {
-            basePos.setX(mouseEvent.getSceneX());
-            basePos.setY(mouseEvent.getSceneY());
-
-            if (mouseEvent.isPrimaryButtonDown())
-            {
-                basePivot.setX(zoom.getX());
-                basePivot.setY(zoom.getY());
-            }
-            if (mouseEvent.isSecondaryButtonDown())
-            {
-                baseRotate.setX(rotateY.angleProperty().get());
-                baseRotate.setY(rotateX.angleProperty().get());
-            }
-        }));
-        scene.setOnMouseDragged((mouseEvent ->
-        {
-            if (mouseEvent.isPrimaryButtonDown())
-            {
-                if (pivot.xProperty().isBound())
-                {
-                    pivot.xProperty().unbind();
-                    pivot.xProperty().set(0);
-                }
-                if (pivot.yProperty().isBound()) {
-                    pivot.yProperty().unbind();
-                    pivot.yProperty().set(0);
-                }
-
-                double moveX = basePivot.getX() + (basePos.getX() - mouseEvent.getSceneX());
-                double moveY = basePivot.getY() + (basePos.getY() - mouseEvent.getSceneY());
-
-                zoom.setX(moveX);
-                zoom.setY(moveY);
-            }
-            if (mouseEvent.isSecondaryButtonDown())
-            {
-                double rotateByX = baseRotate.getX() + (basePos.getX() - mouseEvent.getSceneX());
-                double rotateByY = baseRotate.getY() + (basePos.getY() - mouseEvent.getSceneY());
-                rotateY.angleProperty().set(rotateByX);
-                rotateX.angleProperty().set(rotateByY);
-            }
-        }));
-
-        stage.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> zoom.setZ(zoom.getZ() + mouseEvent.getDeltaY()*3));
-    }*/
 
     public static void main(String[] args) {
         launch();

@@ -14,7 +14,7 @@ public class Orbit {
         ORBIT_RESOLUTION = resolution;
     }
 
-    public Path getPathOrbit(com.example.systemesolaire.Vecteur2 sun, double periapsis, double apoapsis) {
+    public Path getPathOrbit(com.example.systemesolaire.Vecteur3 sun, double periapsis, double apoapsis) {
         double semiMajorLength = (periapsis + apoapsis) / 2;
         double linearEccentricity = semiMajorLength - periapsis;
         double semiMinorLength = Math.sqrt(Math.pow(semiMajorLength, 2) - Math.pow(linearEccentricity, 2));
@@ -35,7 +35,7 @@ public class Orbit {
         return pathOrbit;
     }
 
-    public com.example.systemesolaire.Vecteur2 findOrbitPoint(com.example.systemesolaire.Vecteur2 sun, double periapsis, double apoapsis, double t) {
+    public com.example.systemesolaire.Vecteur3 findOrbitPoint(com.example.systemesolaire.Vecteur3 sun, double periapsis, double apoapsis, double t) {
         double semiMajorLength = (periapsis + apoapsis) / 2;
         double linearEccentricity = semiMajorLength - periapsis;
         double eccentricity = linearEccentricity / semiMajorLength;
@@ -49,7 +49,7 @@ public class Orbit {
         double pointX = Math.cos(eccentricAnomaly) * semiMajorLength + ellipseCenterX;
         double pointY = Math.sin(eccentricAnomaly) * semiMinorLength + ellipseCenterY;
 
-        return new com.example.systemesolaire.Vecteur2(pointX, pointY);
+        return new com.example.systemesolaire.Vecteur3(pointX, pointY, 0);
     }
 
     private double keplerEquation(double E, double M, double e) {

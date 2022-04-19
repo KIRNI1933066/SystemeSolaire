@@ -22,8 +22,8 @@ import static com.example.systemesolaire.Main.*;
 
 public class Planete extends Sphere {
 
-    private final com.example.systemesolaire.Vecteur2 mousepos = new com.example.systemesolaire.Vecteur2();
-    private com.example.systemesolaire.Vecteur2 position, speed;
+    private final com.example.systemesolaire.Vecteur3 mousepos = new com.example.systemesolaire.Vecteur3();
+    private com.example.systemesolaire.Vecteur3 position, speed;
     public String name;
     private Orbit orbit;
     private double periapsis, apoapsis;
@@ -40,12 +40,12 @@ public class Planete extends Sphere {
         PhongMaterial mat = new PhongMaterial();
         mat.setDiffuseMap(new Image(texture));
         super.setMaterial(mat);
-        position = new com.example.systemesolaire.Vecteur2(0, 0);
+        position = new com.example.systemesolaire.Vecteur3();
         super.setTranslateX(position.getX());
         super.setTranslateY(position.getY());
         super.translateXProperty().bind(position.XProperty());
         super.translateYProperty().bind(position.YProperty());
-        speed = new com.example.systemesolaire.Vecteur2();
+        speed = new com.example.systemesolaire.Vecteur3();
         super.getTransforms().addAll(new Rotate(90,Rotate.X_AXIS));
 
 
@@ -75,7 +75,7 @@ public class Planete extends Sphere {
             principal.getChildren().remove(infoPlanete);
         });
         position.XProperty().addListener((observable, oldVal, newVal) -> {
-            infoPlanete.setDistanceSoleil(Vecteur2.distanceTo(position, POS_SOLEIL));
+            infoPlanete.setDistanceSoleil(Vecteur3.distanceTo(position, POS_SOLEIL));
         });
 
         super.setOnMousePressed(mouseEvent -> {
@@ -114,7 +114,7 @@ public class Planete extends Sphere {
     public Planete() {}
 
 
-    public void updateOrbitPath(com.example.systemesolaire.Vecteur2 sunPosition, int indexPlanete) {
+    public void updateOrbitPath(com.example.systemesolaire.Vecteur3 sunPosition, int indexPlanete) {
         if (orbitPath != null) {
             com.example.systemesolaire.Main.systeme.getChildren().remove(orbitPath);
         }
@@ -176,8 +176,8 @@ public class Planete extends Sphere {
         drawPath = false;
     }
 
-    public void updatePosition(com.example.systemesolaire.Vecteur2 sunPosition, double t, int indexPlanete) {
-        com.example.systemesolaire.Vecteur2 newPosition = orbit.findOrbitPoint(sunPosition, periapsis/ ECHELLE, apoapsis/ ECHELLE, t);
+    public void updatePosition(com.example.systemesolaire.Vecteur3 sunPosition, double t, int indexPlanete) {
+        com.example.systemesolaire.Vecteur3 newPosition = orbit.findOrbitPoint(sunPosition, periapsis/ ECHELLE, apoapsis/ ECHELLE, t);
         position.setX(newPosition.getX());
         position.setY(newPosition.getY());
 
