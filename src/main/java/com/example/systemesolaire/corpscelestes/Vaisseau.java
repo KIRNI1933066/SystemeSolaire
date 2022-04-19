@@ -15,6 +15,8 @@ public class Vaisseau extends Sphere {
     private Vecteur3 vitesse, position;
     private boolean bouger = false;
     private Random rand = new Random();
+    private float min = -100;
+    private float max = 100;
 
     public Vaisseau(Planete[] planetes, Vecteur3 position) {
         this.planetes = planetes;
@@ -23,7 +25,8 @@ public class Vaisseau extends Sphere {
         matVaisseau.setDiffuseColor(Color.RED);
         super.setMaterial(matVaisseau);
         this.position = position;
-        vitesse = new Vecteur3(rand.nextInt(5),rand.nextInt(5),rand.nextInt(5));
+        vitesse = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min),
+        (Math.random() * (max - min) + min));
         super.translateXProperty().bind(position.XProperty());
         super.translateYProperty().bind(position.YProperty());
         super.translateZProperty().bind(position.ZProperty());
@@ -62,9 +65,13 @@ public class Vaisseau extends Sphere {
             System.out.println(nom.toUpperCase() + position);
             double mu = Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).mu;
             Vecteur3 r = r(planetePlusProche);
-            /*if (r.getX() < 10 && r.getY() < 10 && r.getZ() < 10) {
+            if (Math.abs(r.getX()) < Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).radius&&
+                    Math.abs(r.getY()) < Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).radius &&
+                    Math.abs(r.getZ()) < Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).radius) {
                 bouger = false;
-            }*/
+                System.out.println("r :" + r  + "infLuence : " + Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).radius);
+
+            }
             double normR = r.normaliser();
             System.out.println("norm" + normR);
             Vecteur3 a = r.multiScalaire((mu/(normR * normR * normR))/9E+9);

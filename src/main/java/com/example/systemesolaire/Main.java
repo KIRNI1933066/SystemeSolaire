@@ -34,7 +34,7 @@ public class Main extends Application {
     private static final int HAUTEUR_SCENE = 1000;
     private static double temps = 0;
     //0.Mercure 1.Venus 2.Terre 3.Mars 4.Jupiter 5.Saturn 6.Uranus 7.Neptune
-    private static final double[] TEMPS_PLANETES = {0,0.5,0.75,0.8,0.4,0.3,0,0.1};
+    private static final double[] TEMPS_PLANETES = {0.5,0.5,0.75,0.8,0.4,0.3,0,0.1};
     private static final double[] FACTEURS_VITESSE = {1.6075,1.176,1,0.8085,0.4389,0.3254,0.2287,0.1823};
     private static final double V_BASE_TERRE = 0.0001;
     public static Group GROUP_SYSTEME_SOLAIRE = new Group();
@@ -171,7 +171,7 @@ public class Main extends Application {
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
-                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,false,false,false,true))));
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,false,false,true,true))));
         menu.setCenter(vb);
 
 
