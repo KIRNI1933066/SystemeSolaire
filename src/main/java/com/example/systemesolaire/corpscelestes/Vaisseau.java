@@ -1,12 +1,12 @@
-package com.example.systemesolaire;
+package com.example.systemesolaire.corpscelestes;
 
-import javafx.scene.Scene;
+import com.example.systemesolaire.utilitaires.Constantes;
+import com.example.systemesolaire.utilitaires.Vecteur3;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 
 import java.io.FileNotFoundException;
-import java.util.Locale;
 import java.util.Random;
 
 public class Vaisseau extends Sphere {

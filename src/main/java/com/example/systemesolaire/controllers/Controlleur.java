@@ -1,5 +1,7 @@
-package com.example.systemesolaire;
+package com.example.systemesolaire.controllers;
 
+import com.example.systemesolaire.corpscelestes.Vaisseau;
+import com.example.systemesolaire.utilitaires.Vecteur3;
 import javafx.scene.Camera;
 import javafx.scene.Scene;
 import javafx.scene.input.ScrollEvent;

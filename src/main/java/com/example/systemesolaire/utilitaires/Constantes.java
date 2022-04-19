@@ -1,4 +1,4 @@
-package com.example.systemesolaire;
+package com.example.systemesolaire.utilitaires;
 
 import javafx.scene.paint.Color;
 
