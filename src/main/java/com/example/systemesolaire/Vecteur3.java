@@ -20,8 +20,8 @@ public class Vecteur3 {
         this.setZ(z);
     }
 
-    public final void setX(double var1) {
-        this.XProperty().set(var1);
+    public final void setX(double x) {
+        this.XProperty().set(x);
     }
 
     public final double getX() {
@@ -44,8 +44,8 @@ public class Vecteur3 {
         return this.x;
     }
 
-    public final void setY(double var1) {
-        this.YProperty().set(var1);
+    public final void setY(double y) {
+        this.YProperty().set(y);
     }
 
     public final double getY() {
