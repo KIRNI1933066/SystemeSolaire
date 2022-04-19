@@ -39,14 +39,14 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws FileNotFoundException {
 
-        Image vide = new Image(new FileInputStream("Blank.jpg"));
-        Image menuImage = new Image(new FileInputStream("menuimage.jpg"));
-        Image back = new Image(new FileInputStream("bkg1_back.jpg"));
-        Image bot = new Image(new FileInputStream("bkg1_bot.jpg"));
-        Image front = new Image(new FileInputStream("bkg1_front.jpg"));
-        Image left = new Image(new FileInputStream("bkg1_left.jpg"));
-        Image right = new Image(new FileInputStream("bkg1_right.jpg"));
-        Image top = new Image(new FileInputStream("bkg1_top.jpg"));
+        Image vide = new Image(Constantes.IMAGES_PATH + "Blank.jpg");
+        Image menuImage = new Image(Constantes.IMAGES_PATH + "menuimage.jpg");
+        Image back = new Image(Constantes.IMAGES_PATH + "bkg1_back.jpg");
+        Image bot = new Image(Constantes.IMAGES_PATH + "bkg1_bot.jpg");
+        Image front = new Image(Constantes.IMAGES_PATH + "bkg1_front.jpg");
+        Image left = new Image(Constantes.IMAGES_PATH + "bkg1_left.jpg");
+        Image right = new Image(Constantes.IMAGES_PATH + "bkg1_right.jpg");
+        Image top = new Image(Constantes.IMAGES_PATH + "bkg1_top.jpg");
         ImageView ivMenu = new ImageView(menuImage);
 
         Sphere soleil = new Sphere(10);

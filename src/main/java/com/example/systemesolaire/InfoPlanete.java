@@ -30,7 +30,7 @@ import java.text.NumberFormat;
             bP.getStyleClass().add("fond");
             VBox vBox = new VBox();
             try {
-                Image image = new Image("file:src/main/images/" + planete.name + ".png");
+                Image image = new Image(Constantes.IMAGES_PATH + planete.name + ".png");
                 ImageView imageView = new ImageView(image);
                 imageView.setPreserveRatio(true);
                 imageView.setFitWidth(150);
