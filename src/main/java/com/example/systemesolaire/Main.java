@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
@@ -37,8 +37,9 @@ public class Main extends Application {
     private static final double[] TEMPS_PLANETES = {0,0.5,0.75,0.8,0.4,0.3,0,0.1};
     private static final double[] FACTEURS_VITESSE = {1.6075,1.176,1,0.8085,0.4389,0.3254,0.2287,0.1823};
     private static final double V_BASE_TERRE = 0.0001;
-    public static Group systeme = new Group();
+    public static Group GROUP_SYSTEME_SOLAIRE = new Group();
     public static Group principal = new Group();
+    private static final Planete[] PLANETES = new Planete[8];
     @Override
     public void start(Stage stage) {
 
@@ -50,31 +51,49 @@ public class Main extends Application {
         Image left = new Image(Constantes.IMAGES_PATH + "bkg1_left.jpg");
         Image right = new Image(Constantes.IMAGES_PATH + "bkg1_right.jpg");
         Image top = new Image(Constantes.IMAGES_PATH + "bkg1_top.jpg");
-        ImageView ivMenu = new ImageView(menuImage);
+        ImageView imageMenu = new ImageView(menuImage);
+
+        Scene scene2D = new Scene(principal, LARGEUR_SCENE, HAUTEUR_SCENE);
+        scene2D.getStylesheets().add("file:src/main/java/com/example/systemesolaire/css/infoplanete.css");
+
+        PerspectiveCamera camera = new PerspectiveCamera(true);
+        camera.setNearClip(1);
+        camera.setFarClip(1000000);
+
+        PointLight pointLight = new PointLight();
+        pointLight.setColor(Color.ORANGE);
+        GROUP_SYSTEME_SOLAIRE.getChildren().add(pointLight);
+        GROUP_SYSTEME_SOLAIRE.getChildren().add(new AmbientLight());
+
+        Skybox skybox = new Skybox(top,bot,left,right,front,back,1000000,camera);
+        GROUP_SYSTEME_SOLAIRE.getChildren().addAll(skybox);
 
         Sphere soleil = new Sphere(10);
         PhongMaterial matSoleil = new PhongMaterial();
         matSoleil.setDiffuseColor(Color.ORANGE);
         matSoleil.setSelfIlluminationMap(vide);
         soleil.setMaterial(matSoleil);
-        systeme.getChildren().addAll(soleil);
+        GROUP_SYSTEME_SOLAIRE.getChildren().addAll(soleil);
 
         Slider sliderVitesseTemps = new Slider(0.05,500,5);
         sliderVitesseTemps.setTranslateY(30);
         sliderVitesseTemps.setTranslateX(20);
 
+        Vaisseau vaisseau = new Vaisseau(PLANETES,new Vecteur3(0,0,0));
 
-        Planete[] planetes = new Planete[8];
+        new Controlleur(stage,scene2D,camera,vaisseau);
+
+
         Constantes.InfoPlanetes[] infoPlanetes = Constantes.InfoPlanetes.values();
-        for (int i = 0; i < planetes.length; i++) {
-            planetes[i] = new Planete(infoPlanetes[i].radius, infoPlanetes[i].periapsis, infoPlanetes[i].apoapsis, infoPlanetes[i].name, infoPlanetes[i].texture, i, infoPlanetes[i].masse);
-            Group planeteSeule = new Group(planetes[i]);
+        for (int i = 0; i < PLANETES.length; i++) {
+            PLANETES[i] = new Planete(infoPlanetes[i].radius, infoPlanetes[i].periapsis, infoPlanetes[i].apoapsis, infoPlanetes[i].name, infoPlanetes[i].texture, i, infoPlanetes[i].masse);
+            Group planeteSeule = new Group(PLANETES[i]);
             planeteSeule.getTransforms().addAll(
                     new Rotate(infoPlanetes[i].inclination, Rotate.X_AXIS),
                     new Rotate(infoPlanetes[i].inclination, Rotate.Y_AXIS));
-            systeme.getChildren().add(planeteSeule);
+            GROUP_SYSTEME_SOLAIRE.getChildren().add(planeteSeule);
         }
-        Vaisseau vaisseau = new Vaisseau(planetes,new Vecteur3(0,0,0));
+
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 try {
@@ -91,7 +110,7 @@ public class Main extends Application {
                 }
                 if (temps > 1)
                     temps = 0;
-                for (Planete planet : planetes) {
+                for (Planete planet : PLANETES) {
                     switch (planet.name) {
                         case "Mercure" -> planet.updatePosition(POS_SOLEIL, TEMPS_PLANETES[0],0);
                         case "Venus" -> planet.updatePosition(POS_SOLEIL, TEMPS_PLANETES[1],1);
@@ -106,24 +125,13 @@ public class Main extends Application {
             }
         }.start();
 
-        PerspectiveCamera camera = new PerspectiveCamera(true);
-        camera.setNearClip(1);
-        camera.setFarClip(1000000);
-        Skybox skybox = new Skybox(top,bot,left,right,front,back,1000000,camera);
-        systeme.getChildren().addAll(skybox);
-
-        final PointLight pointLight = new PointLight();
-        pointLight.setColor(Color.ORANGE);
-        systeme.getChildren().add(pointLight);
-        systeme.getChildren().add(new AmbientLight());
-
         Group racine3D = new Group();
-        SubScene scene3D = new SubScene(racine3D, LARGEUR_SCENE,HAUTEUR_SCENE,true, SceneAntialiasing.BALANCED);
-        scene3D.setFill(Color.BLACK);
-        scene3D.setCamera(camera);
+        SubScene sceneSystemeSolaire = new SubScene(racine3D, LARGEUR_SCENE,HAUTEUR_SCENE,true, SceneAntialiasing.BALANCED);
+        sceneSystemeSolaire.setFill(Color.BLACK);
+        sceneSystemeSolaire.setCamera(camera);
 
-
-        Group menu = new Group();
+        BorderPane menu = new BorderPane();
+        menu.setPrefSize(LARGEUR_SCENE, HAUTEUR_SCENE);
         VBox vb = new VBox();
         Font font = Font.font("Courier New", FontWeight.BOLD, 20);
         Button exit = new Button("X");
@@ -131,8 +139,8 @@ public class Main extends Application {
         exit.setStyle("-fx-background-color: #8A2BE2;");
         exit.setFont(font);
         exit.setOnAction(ev -> {
-            racine3D.getChildren().remove(systeme);
-            principal.getChildren().removeAll(sliderVitesseTemps,exit,scene3D);
+            racine3D.getChildren().remove(GROUP_SYSTEME_SOLAIRE);
+            principal.getChildren().removeAll(sliderVitesseTemps,exit,sceneSystemeSolaire);
             principal.getChildren().addAll(menu);
         });
 
@@ -141,8 +149,9 @@ public class Main extends Application {
         bouttonSysteme.setFont(font);
         bouttonSysteme.setOnAction(ev -> {
             principal.getChildren().remove(menu);
-            principal.getChildren().addAll(scene3D,sliderVitesseTemps,exit);
-            racine3D.getChildren().addAll(systeme);
+            principal.getChildren().addAll(sceneSystemeSolaire,sliderVitesseTemps,exit);
+            racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
+            GROUP_SYSTEME_SOLAIRE.getChildren().remove(vaisseau);
         });
 
         Button bouttonVaisseau = new Button("Envoyer vaisseau");
@@ -150,27 +159,37 @@ public class Main extends Application {
         bouttonVaisseau.setFont(font);
         bouttonVaisseau.setOnAction(ev -> {
             principal.getChildren().remove(menu);
-            principal.getChildren().addAll(scene3D,sliderVitesseTemps,exit);
-            racine3D.getChildren().addAll(systeme);
+            principal.getChildren().addAll(sceneSystemeSolaire,sliderVitesseTemps,exit);
+            racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
             vaisseau.setBouger(true);
+            GROUP_SYSTEME_SOLAIRE.getChildren().addAll(vaisseau);
         });
         vb.getChildren().addAll(bouttonSysteme,bouttonVaisseau);
-        vb.setTranslateX(600);
-        vb.setTranslateY(450);
         vb.setAlignment(Pos.CENTER);
         vb.setSpacing(20);
-        menu.getChildren().addAll(ivMenu,vb);
-        principal.getChildren().addAll(menu);
+        menu.setBackground(new Background(new BackgroundImage(menuImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,false,false,false,true))));
+        menu.setCenter(vb);
 
-        Scene scene2D = new Scene(principal, LARGEUR_SCENE, HAUTEUR_SCENE);
-        scene2D.getStylesheets().add("file:src/main/java/com/example/systemesolaire/css/infoplanete.css");
-        new Controlleur(stage,scene2D,camera,vaisseau);
-        systeme.getChildren().addAll(vaisseau);
+
+
+
+        principal.getChildren().addAll(menu);
 
         stage.setScene(scene2D);
         stage.setFullScreen(true);
-        stage.widthProperty().addListener((observable -> scene3D.setWidth(stage.getWidth())));
-        stage.heightProperty().addListener((observable -> scene3D.setHeight(stage.getHeight())));
+        stage.widthProperty().addListener((observable -> {
+            sceneSystemeSolaire.setWidth(stage.getWidth());
+            menu.setPrefWidth(stage.getWidth());
+        }));
+        stage.heightProperty().addListener((observable -> {
+            sceneSystemeSolaire.setHeight(stage.getHeight());
+            menu.setPrefHeight(stage.getHeight());
+
+        }));
         stage.show();
     }
 

@@ -108,7 +108,7 @@ public class Planete extends Sphere {
 
     public void updateOrbitPath(Vecteur3 sunPosition, int indexPlanete) {
         if (orbitPath != null) {
-            com.example.systemesolaire.Main.systeme.getChildren().remove(orbitPath);
+            com.example.systemesolaire.Main.GROUP_SYSTEME_SOLAIRE.getChildren().remove(orbitPath);
         }
         Path orbitRealPath = orbit.getPathOrbit(sunPosition, periapsis/ ECHELLE, apoapsis/ ECHELLE);
 
@@ -164,7 +164,7 @@ public class Planete extends Sphere {
 
         Group groupOrbit = new Group(orbitPath);
 
-        com.example.systemesolaire.Main.systeme.getChildren().addAll(groupOrbit);
+        com.example.systemesolaire.Main.GROUP_SYSTEME_SOLAIRE.getChildren().addAll(groupOrbit);
         drawPath = false;
     }
 

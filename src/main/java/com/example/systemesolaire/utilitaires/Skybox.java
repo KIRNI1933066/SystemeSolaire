@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.example.systemesolaire;
+package com.example.systemesolaire.utilitaires;
 
         import javafx.animation.AnimationTimer;
         import javafx.beans.property.DoubleProperty;
