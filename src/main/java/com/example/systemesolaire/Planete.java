@@ -107,10 +107,10 @@ public class Planete extends Sphere {
         Path orbitRealPath = orbit.getPathOrbit(sunPosition, periapsis/ ECHELLE, apoapsis/ ECHELLE);
 
 
-        List<com.example.systemesolaire.Point3D> listPoints3D = new ArrayList<>();
+        List<Vecteur3> listPoints3D = new ArrayList<>();
         for (int i = 1; i < orbitRealPath.getElements().size(); i++) {
             LineTo lineTo = (LineTo) orbitRealPath.getElements().get(i);
-            listPoints3D.add(new com.example.systemesolaire.Point3D(lineTo.getX(), lineTo.getY(), 0));
+            listPoints3D.add(new Vecteur3(lineTo.getX(), lineTo.getY(), 0));
         }
 
         BorderPane bp = (BorderPane)infoPlanete.getChildren().get(0);
