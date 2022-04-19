@@ -21,10 +21,11 @@ public class Controlleur {
     private static Translate zoom;
 
 
-    public Controlleur(Stage stage, Scene scene, Camera camera) {
+    public Controlleur(Stage stage, Scene scene, Camera camera, Vaisseau vaisseau) {
         this.stage = stage;
         this.scene = scene;
         this.camera = camera;
+        this.vaisseau = vaisseau;
         mouseControl();
     }
 
@@ -51,6 +52,9 @@ public class Controlleur {
         Vecteur2 basePos = new Vecteur2();
         Vecteur2 basePivot = new Vecteur2(pivot.getX(), pivot.getY());
         Vecteur2 baseRotate = new Vecteur2();
+        pivot.xProperty().bind(vaisseau.translateXProperty());
+        pivot.yProperty().bind(vaisseau.translateYProperty());
+
         scene.setOnMousePressed((mouseEvent -> {
             basePos.setX(mouseEvent.getSceneX());
             basePos.setY(mouseEvent.getSceneY());
@@ -105,25 +109,30 @@ public class Controlleur {
                 case S -> dowm();
                 case D -> right();
                 case A -> left();
+                case E -> zPlus();
+                case Q -> zMoins();
             }
         });
     }
 
     private void up() {
+        vaisseau.setTranslateX(vaisseau.getTranslateX()-5);
+        System.out.println("up");
+        /*
         TranslateTransition translateTransitionRight = new TranslateTransition();
         translateTransitionRight.setDuration(Duration.millis(200));
         translateTransitionRight.setNode(vaisseau);
         translateTransitionRight.setFromY(vaisseau.getTranslateY());
-        translateTransitionRight.setToY(vaisseau.getTranslateY()-20);
+        translateTransitionRight.setToY(vaisseau.getTranslateY()-5);
         translateTransitionRight.play();
-        System.out.println("up");
+        System.out.println("up");*/
     }
     private void dowm() {
         TranslateTransition translateTransitionRight = new TranslateTransition();
         translateTransitionRight.setDuration(Duration.millis(200));
         translateTransitionRight.setNode(vaisseau);
         translateTransitionRight.setFromY(vaisseau.getTranslateY());
-        translateTransitionRight.setToY(vaisseau.getTranslateY()+20);
+        translateTransitionRight.setToY(vaisseau.getTranslateY()+5);
         translateTransitionRight.play();
         System.out.println("down");
     }
@@ -132,7 +141,7 @@ public class Controlleur {
         translateTransitionRight.setDuration(Duration.millis(200));
         translateTransitionRight.setNode(vaisseau);
         translateTransitionRight.setFromX(vaisseau.getTranslateX());
-        translateTransitionRight.setToX(vaisseau.getTranslateY()+20);
+        translateTransitionRight.setToX(vaisseau.getTranslateY()+5);
         translateTransitionRight.play();
         System.out.println("right");
     }
@@ -141,7 +150,7 @@ public class Controlleur {
         translateTransitionRight.setDuration(Duration.millis(200));
         translateTransitionRight.setNode(vaisseau);
         translateTransitionRight.setFromX(vaisseau.getTranslateX());
-        translateTransitionRight.setToX(vaisseau.getTranslateX()-20);
+        translateTransitionRight.setToX(vaisseau.getTranslateX()-5);
         translateTransitionRight.play();
         System.out.println("left");
     }
@@ -149,19 +158,19 @@ public class Controlleur {
         TranslateTransition translateTransitionRight = new TranslateTransition();
         translateTransitionRight.setDuration(Duration.millis(200));
         translateTransitionRight.setNode(vaisseau);
-        translateTransitionRight.setFromX(vaisseau.getTranslateX());
-        translateTransitionRight.setToX(vaisseau.getTranslateX()-20);
+        translateTransitionRight.setFromZ(vaisseau.getTranslateX());
+        translateTransitionRight.setToZ(vaisseau.getTranslateX()+5);
         translateTransitionRight.play();
-        System.out.println("left");
+        System.out.println("zPlus");
     }
     private void zMoins() {
         TranslateTransition translateTransitionRight = new TranslateTransition();
         translateTransitionRight.setDuration(Duration.millis(200));
         translateTransitionRight.setNode(vaisseau);
         translateTransitionRight.setFromZ(vaisseau.getTranslateX());
-        translateTransitionRight.setToZ(vaisseau.getTranslateX()-20);
+        translateTransitionRight.setToZ(vaisseau.getTranslateX()-5);
         translateTransitionRight.play();
-        System.out.println("left");
+        System.out.println("zMoins");
     }
 
 

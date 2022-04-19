@@ -31,7 +31,7 @@ public class Main extends Application {
     private static final int HAUTEUR_SCENE = 1000;
     private static double temps = 0;
     //0.Mercure 1.Venus 2.Terre 3.Mars 4.Jupiter 5.Saturn 6.Uranus 7.Neptune
-    private static final double[] TEMPS_PLANETES = {0,0,0,0,0,0,0,0};
+    private static final double[] TEMPS_PLANETES = {0,0.5,0.75,0.8,0.4,0.3,0,0.1};
     private static final double[] FACTEURS_VITESSE = {1.6075,1.176,1,0.8085,0.4389,0.3254,0.2287,0.1823};
     private static final double V_BASE_TERRE = 0.0001;
     public static Group systeme = new Group();
@@ -71,8 +71,14 @@ public class Main extends Application {
                     new Rotate(infoPlanetes[i].inclination, Rotate.Y_AXIS));
             systeme.getChildren().add(planeteSeule);
         }
+        Vaisseau vaisseau = new Vaisseau(planetes,new Vecteur3(0,0,0));
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
+                try {
+                    vaisseau.updatePosition();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 double vitesseBase = V_BASE_TERRE * sliderVitesseTemps.valueProperty().get();
                 temps = temps + sliderVitesseTemps.valueProperty().get();
                 for (int i = 0; i < TEMPS_PLANETES.length; i++) {
@@ -100,7 +106,7 @@ public class Main extends Application {
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.setNearClip(1);
         camera.setFarClip(1000000);
-        Skybox skybox = new Skybox(top,bot,left,right,front,back,80000,camera);
+        Skybox skybox = new Skybox(top,bot,left,right,front,back,1000000,camera);
         systeme.getChildren().addAll(skybox);
 
         final PointLight pointLight = new PointLight();
@@ -143,6 +149,7 @@ public class Main extends Application {
             principal.getChildren().remove(menu);
             principal.getChildren().addAll(scene3D,sliderVitesseTemps,exit);
             racine3D.getChildren().addAll(systeme);
+            vaisseau.setBouger(true);
         });
         vb.getChildren().addAll(bouttonSysteme,bouttonVaisseau);
         vb.setTranslateX(600);
@@ -154,8 +161,11 @@ public class Main extends Application {
 
         Scene scene2D = new Scene(principal, LARGEUR_SCENE, HAUTEUR_SCENE);
         scene2D.getStylesheets().add("file:src/main/java/com/example/systemesolaire/css/infoplanete.css");
-        new Controlleur(stage,scene2D,camera);
-        systeme.getChildren().addAll(new Vaisseau(0,0,0,planetes,scene2D));
+        new Controlleur(stage,scene2D,camera,vaisseau);
+        systeme.getChildren().addAll(vaisseau);
+        /*Button bouttonVaisseau2 = new Button("Vaisseau");
+        bouttonVaisseau2.setOnAction(ev -> systeme.getChildren().addAll(vaisseau));
+        principal.getChildren().addAll(bouttonVaisseau2);*/
         //mouseControl(stage, scene2D, camera);
 
         stage.setScene(scene2D);

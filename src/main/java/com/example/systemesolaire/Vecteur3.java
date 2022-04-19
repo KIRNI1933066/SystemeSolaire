@@ -68,7 +68,7 @@ public class Vecteur3 {
         return this.y;
     }
 
-    public void setZ(double z) {this.z.set(z);}
+    public void setZ(double z) {this.ZProperty().set(z);}
 
     public final double getZ() {
         return this.z == null ? 0 : this.z.get();
@@ -115,10 +115,8 @@ public class Vecteur3 {
         this.setZ(getY() - other.getZ());
     }
 
-    public void multiScalaire(double nombre) {
-        this.setX(getX() * nombre);
-        this.setY(getY() * nombre);
-        this.setZ(getZ() * nombre);
+    public Vecteur3 multiScalaire(double nombre) {
+        return new Vecteur3(getX() * nombre, getY() * nombre,getZ() * nombre);
     }
 
     public boolean equals(Vecteur3 other) {

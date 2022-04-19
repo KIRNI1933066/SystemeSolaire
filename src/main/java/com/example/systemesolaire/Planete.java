@@ -111,6 +111,8 @@ public class Planete extends Sphere {
             principal.getChildren().remove(infoPlanete);
         });
     }
+    public Planete() {}
+
 
     public void updateOrbitPath(com.example.systemesolaire.Vecteur2 sunPosition, int indexPlanete) {
         if (orbitPath != null) {

@@ -1,49 +1,47 @@
 package com.example.systemesolaire;
 
-import javafx.animation.Interpolatable;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.Shape3D;
+import javafx.scene.shape.Sphere;
 
 import java.io.FileNotFoundException;
+import java.util.Locale;
+import java.util.Random;
 
-public class Vaisseau extends Cylinder {
+public class Vaisseau extends Sphere {
 
-    private double posX,posY,posZ;
     private Planete[] planetes;
+    private Vecteur3 vitesse, position;
+    private boolean bouger = false;
+    private Random rand = new Random();
 
-    public Vaisseau(double posX, double posY, double posZ, Planete[] planetes, Scene scene) {
-        this.posX = posX;
-        this.posY = posY;
-        this.posZ = posZ;
+    public Vaisseau(Planete[] planetes, Vecteur3 position) {
         this.planetes = planetes;
-        //super.translateXProperty().bind(new SimpleDoubleProperty(posX));
-        //super.translateYProperty().bind(new SimpleDoubleProperty(posY));
-        //super.translateZProperty().bind(new SimpleDoubleProperty(posZ));
-        super.setHeight(50);
-        super.setRadius(20);
+        super.setRadius(10);
         PhongMaterial matVaisseau = new PhongMaterial();
         matVaisseau.setDiffuseColor(Color.RED);
         super.setMaterial(matVaisseau);
-        new Controlleur(this,scene);
+        this.position = position;
+        vitesse = new Vecteur3(rand.nextInt(5),rand.nextInt(5),rand.nextInt(5));
+        super.translateXProperty().bind(position.XProperty());
+        super.translateYProperty().bind(position.YProperty());
+        super.translateZProperty().bind(position.ZProperty());
+
     }
 
     public Vecteur3 r(Planete planete) {
-        return new Vecteur3(planete.getTranslateX()-posX, planete.getTranslateY()-posY,
-                planete.getTranslateZ()-posZ);
+        return new Vecteur3(planete.getTranslateX() - position.getX(), planete.getTranslateY() - position.getY(),
+                planete.getTranslateZ() - position.getZ());
     }
 
     public Planete planetePlusProche() throws FileNotFoundException {
-        Planete plusProche = new Planete(0, Color.BLACK,0,0,"","",0,0);
+        Planete plusProche = null;
         double distanceMin = 100000000;
         double normR;
         for (Planete planete : planetes) {
-            normR = Math.sqrt(((plusProche.getTranslateX()-posX)*(plusProche.getTranslateX()-posX))
-                    + ((plusProche.getTranslateY()-posY)*(plusProche.getTranslateY()-posY)));
+            normR = Math.sqrt(((planete.getTranslateX() - position.getX()) * (planete.getTranslateX() - position.getX()))
+                    + ((planete.getTranslateY() - position.getY()) * (planete.getTranslateY() - position.getY())));
             if (normR < distanceMin) {
                 plusProche = planete;
                 distanceMin = normR;
@@ -53,38 +51,34 @@ public class Vaisseau extends Cylinder {
     }
 
     public void updatePosition() throws FileNotFoundException {
-        Constantes.InfoPlanetes[] infoPlanetes = Constantes.InfoPlanetes.values();
-        Planete planetePlusProche = planetePlusProche();
-        String nom = planetePlusProche.name;
-        double mu = Constantes.InfoPlanetes.valueOf(nom).mu;
-        Vecteur3 r = r(planetePlusProche);
-        double normR = Math.sqrt(((r.getX())*(r.getX()) + ((r.getY())*(r.getY()))));
-        Vecteur3 a = new Vecteur3((-r.getX()*mu)/(normR*normR*normR),(-r.getY()*mu)/(normR*normR*normR),
-                (-r.getZ()*mu)/(normR*normR*normR));
-
+        if (bouger) {
+            Planete planetePlusProche = planetePlusProche();
+            if (planetePlusProche == null) {
+                acc(new Vecteur3(0, 0, 0));
+                System.out.println("aucune planete");
+                return;
+            }
+            String nom = planetePlusProche.name;
+            System.out.println(nom.toUpperCase() + position);
+            double mu = Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).mu;
+            Vecteur3 r = r(planetePlusProche);
+            /*if (r.getX() < 10 && r.getY() < 10 && r.getZ() < 10) {
+                bouger = false;
+            }*/
+            double normR = Math.sqrt(((r.getX()) * (r.getX()) + ((r.getY()) * (r.getY()))));
+            System.out.println("norm" + normR);
+            Vecteur3 a = r.multiScalaire((mu/(normR * normR * normR))/9E+9);
+            System.out.println(a);
+            acc(a);
+        }
     }
 
-    public void setPosX(double posX) {
-        this.posX = posX;
+    public void acc(Vecteur3 a) {
+        vitesse.add(a);
+        position.add(vitesse.multiScalaire(0.0166666));
     }
 
-    public void setPosY(double posY) {
-        this.posY = posY;
-    }
-
-    public void setPosZ(double posZ) {
-        this.posZ = posZ;
-    }
-
-    public double getPosX() {
-        return posX;
-    }
-
-    public double getPosY() {
-        return posY;
-    }
-
-    public double getPosZ() {
-        return posZ;
+    public void setBouger(boolean bouger) {
+        this.bouger = bouger;
     }
 }
