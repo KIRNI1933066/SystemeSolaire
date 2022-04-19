@@ -61,7 +61,7 @@ public class Main extends Application {
         Planete[] planetes = new Planete[8];
         Constantes.InfoPlanetes[] infoPlanetes = Constantes.InfoPlanetes.values();
         for (int i = 0; i < planetes.length; i++) {
-            planetes[i] = new Planete(infoPlanetes[i].radius, infoPlanetes[i].color, infoPlanetes[i].periapsis, infoPlanetes[i].apoapsis, infoPlanetes[i].name, infoPlanetes[i].texture, i, infoPlanetes[i].masse);
+            planetes[i] = new Planete(infoPlanetes[i].radius, infoPlanetes[i].periapsis, infoPlanetes[i].apoapsis, infoPlanetes[i].name, infoPlanetes[i].texture, i, infoPlanetes[i].masse);
             Group planeteSeule = new Group(planetes[i]);
             planeteSeule.getTransforms().addAll(
                     new Rotate(infoPlanetes[i].inclination, Rotate.X_AXIS),

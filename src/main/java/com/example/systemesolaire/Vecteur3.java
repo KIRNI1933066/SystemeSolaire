@@ -123,9 +123,15 @@ public class Vecteur3 {
         return (this.getX() == other.getX() && this.getY() == other.getY() && this.getZ() == other.getZ());
     }
 
+    public float normaliser() {
+        return (float)Math.sqrt(((this.getX()) * (this.getX()) + ((this.getY()) * (this.getY()))));
+    }
+
+
     @Override
     public String toString() {
         return "X: " + x.get() + " Y: " + y.get() + " Z: " + z.get();
     }
+
 }
 

@@ -3,7 +3,6 @@ package com.example.systemesolaire;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
-import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -12,9 +11,6 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,20 +18,18 @@ import static com.example.systemesolaire.Main.*;
 
 public class Planete extends Sphere {
 
-    private final com.example.systemesolaire.Vecteur3 mousepos = new com.example.systemesolaire.Vecteur3();
-    private com.example.systemesolaire.Vecteur3 position, speed;
+    private Vecteur3 position;
     public String name;
     private Orbit orbit;
     private double periapsis, apoapsis;
     private com.example.systemesolaire.PolyLine3D orbitPath;
     private double radius;
-    private Color couleur;
     private InfoPlanete infoPlanete;
     public double masse;
 
     private boolean drawPath = true;
 
-    public Planete (double radius, Color color, double periapsis, double apoapsis, String name, String texture, int i, double masse) throws FileNotFoundException {
+    public Planete (double radius, double periapsis, double apoapsis, String name, String texture, int i, double masse) {
         super(radius);
         PhongMaterial mat = new PhongMaterial();
         mat.setDiffuseMap(new Image(texture));
@@ -45,7 +39,6 @@ public class Planete extends Sphere {
         super.setTranslateY(position.getY());
         super.translateXProperty().bind(position.XProperty());
         super.translateYProperty().bind(position.YProperty());
-        speed = new com.example.systemesolaire.Vecteur3();
         super.getTransforms().addAll(new Rotate(90,Rotate.X_AXIS));
 
 
@@ -63,7 +56,6 @@ public class Planete extends Sphere {
         this.apoapsis = apoapsis;
         this.periapsis = periapsis;
         this.radius = radius;
-        this.couleur = color;
         this.masse = masse;
         orbit = new Orbit(5000);
 
@@ -71,12 +63,8 @@ public class Planete extends Sphere {
         BorderPane bp = (BorderPane)infoPlanete.getChildren().get(0);
         infoPlanete.setVisible(false);
         principal.getChildren().add(infoPlanete);
-        Platform.runLater(() -> {
-            principal.getChildren().remove(infoPlanete);
-        });
-        position.XProperty().addListener((observable, oldVal, newVal) -> {
-            infoPlanete.setDistanceSoleil(Vecteur3.distanceTo(position, POS_SOLEIL));
-        });
+        Platform.runLater(() -> principal.getChildren().remove(infoPlanete));
+        position.XProperty().addListener((observable, oldVal, newVal) -> infoPlanete.setDistanceSoleil(Vecteur3.distanceTo(position, POS_SOLEIL)));
 
         super.setOnMousePressed(mouseEvent -> {
             if (mouseEvent.isPrimaryButtonDown())
@@ -107,9 +95,7 @@ public class Planete extends Sphere {
                 infoPlanete.setVisible(true);
             });
         });
-        super.setOnMouseExited(mouseEvent -> {
-            principal.getChildren().remove(infoPlanete);
-        });
+        super.setOnMouseExited(mouseEvent -> principal.getChildren().remove(infoPlanete));
     }
     public Planete() {}
 
@@ -181,16 +167,11 @@ public class Planete extends Sphere {
         position.setX(newPosition.getX());
         position.setY(newPosition.getY());
 
-        if (drawPath) {
+        if (drawPath)
             updateOrbitPath(sunPosition, indexPlanete);
-        }
     }
 
     public double getRadiusPlanete() {
         return radius;
-    }
-
-    public Color getCouleur() {
-        return couleur;
     }
 }

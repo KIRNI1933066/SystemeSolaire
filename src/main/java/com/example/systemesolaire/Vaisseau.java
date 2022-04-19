@@ -65,7 +65,7 @@ public class Vaisseau extends Sphere {
             /*if (r.getX() < 10 && r.getY() < 10 && r.getZ() < 10) {
                 bouger = false;
             }*/
-            double normR = Math.sqrt(((r.getX()) * (r.getX()) + ((r.getY()) * (r.getY()))));
+            double normR = r.normaliser();
             System.out.println("norm" + normR);
             Vecteur3 a = r.multiScalaire((mu/(normR * normR * normR))/9E+9);
             System.out.println(a);

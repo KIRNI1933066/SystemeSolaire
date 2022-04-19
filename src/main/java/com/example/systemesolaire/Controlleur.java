@@ -1,30 +1,27 @@
 package com.example.systemesolaire;
 
-import javafx.animation.TranslateTransition;
 import javafx.scene.Camera;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class Controlleur {
 
-    private Stage stage;
-    private Scene scene;
-    private Camera camera;
-    private Vaisseau vaisseau;
+    private final Stage STAGE;
+    private final Scene SCENE;
+    private final Camera CAMERA;
+    private final Vaisseau VAISSEAU;
     private static Translate pivot;
     private static Translate zoom;
 
 
     public Controlleur(Stage stage, Scene scene, Camera camera, Vaisseau vaisseau) {
-        this.stage = stage;
-        this.scene = scene;
-        this.camera = camera;
-        this.vaisseau = vaisseau;
+        this.STAGE = stage;
+        this.SCENE = scene;
+        this.CAMERA = camera;
+        this.VAISSEAU = vaisseau;
         mouseControl();
     }
 
@@ -34,7 +31,7 @@ public class Controlleur {
         Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
         Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
 
-        camera.getTransforms().addAll(
+        CAMERA.getTransforms().addAll(
                 pivot,
                 rotateY,
                 rotateX,
@@ -44,10 +41,10 @@ public class Controlleur {
         Vecteur3 basePos = new Vecteur3();
         Vecteur3 basePivot = new Vecteur3(pivot.getX(), pivot.getY(), pivot.getZ());
         Vecteur3 baseRotate = new Vecteur3();
-        pivot.xProperty().bind(vaisseau.translateXProperty());
-        pivot.yProperty().bind(vaisseau.translateYProperty());
+        pivot.xProperty().bind(VAISSEAU.translateXProperty());
+        pivot.yProperty().bind(VAISSEAU.translateYProperty());
 
-        scene.setOnMousePressed((mouseEvent -> {
+        SCENE.setOnMousePressed((mouseEvent -> {
             basePos.setX(mouseEvent.getSceneX());
             basePos.setY(mouseEvent.getSceneY());
 
@@ -62,7 +59,7 @@ public class Controlleur {
                 baseRotate.setY(rotateX.angleProperty().get());
             }
         }));
-        scene.setOnMouseDragged((mouseEvent ->
+        SCENE.setOnMouseDragged((mouseEvent ->
         {
             if (mouseEvent.isPrimaryButtonDown())
             {
@@ -91,7 +88,7 @@ public class Controlleur {
             }
         }));
 
-        stage.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> zoom.setZ(zoom.getZ() + mouseEvent.getDeltaY()*3));
+        STAGE.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> zoom.setZ(zoom.getZ() + mouseEvent.getDeltaY()*3));
     }
 
 

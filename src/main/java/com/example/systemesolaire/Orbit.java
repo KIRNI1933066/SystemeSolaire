@@ -44,7 +44,7 @@ public class Orbit {
         double ellipseCenterY = sun.getY();
 
         double meanAnomaly = t * Math.PI * 2;
-        double eccentricAnomaly = solve((x) -> (keplerEquation(x, meanAnomaly, eccentricity)), meanAnomaly, 100);
+        double eccentricAnomaly = solve((x) -> (keplerEquation(x, meanAnomaly, eccentricity)), meanAnomaly);
 
         double pointX = Math.cos(eccentricAnomaly) * semiMajorLength + ellipseCenterX;
         double pointY = Math.sin(eccentricAnomaly) * semiMinorLength + ellipseCenterY;
@@ -56,7 +56,8 @@ public class Orbit {
         return M - E + e * Math.sin(E);
     }
 
-    private double solve(Function<Double, Double> function, double initialGuess, int maxIterations) {
+    private double solve(Function<Double, Double> function, double initialGuess) {
+        int maxIterations = 100;
         double h = 0.0001;
         double acceptableError = 0.00000001;
         double guess = initialGuess;
