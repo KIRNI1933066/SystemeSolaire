@@ -112,7 +112,7 @@ public class Main extends Application {
         SubScene scene3D = new SubScene(racine3D, LARGEUR_SCENE,HAUTEUR_SCENE,true, SceneAntialiasing.BALANCED);
         scene3D.setFill(Color.BLACK);
         scene3D.setCamera(camera);
-        systeme.getChildren().addAll(new Vaisseau(0,0,0,planetes,scene3D));
+
 
         Group menu = new Group();
         VBox vb = new VBox();
@@ -155,6 +155,7 @@ public class Main extends Application {
         Scene scene2D = new Scene(principal, LARGEUR_SCENE, HAUTEUR_SCENE);
         scene2D.getStylesheets().add("file:src/main/java/com/example/systemesolaire/css/infoplanete.css");
         new Controlleur(stage,scene2D,camera);
+        systeme.getChildren().addAll(new Vaisseau(0,0,0,planetes,scene2D));
         //mouseControl(stage, scene2D, camera);
 
         stage.setScene(scene2D);

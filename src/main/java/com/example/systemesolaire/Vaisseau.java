@@ -16,20 +16,20 @@ public class Vaisseau extends Cylinder {
     private double posX,posY,posZ;
     private Planete[] planetes;
 
-    public Vaisseau(double posX, double posY, double posZ, Planete[] planetes, SubScene subScene) {
+    public Vaisseau(double posX, double posY, double posZ, Planete[] planetes, Scene scene) {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
         this.planetes = planetes;
-        super.translateXProperty().bind(new SimpleDoubleProperty(posX));
-        super.translateYProperty().bind(new SimpleDoubleProperty(posY));
-        super.translateZProperty().bind(new SimpleDoubleProperty(posZ));
+        //super.translateXProperty().bind(new SimpleDoubleProperty(posX));
+        //super.translateYProperty().bind(new SimpleDoubleProperty(posY));
+        //super.translateZProperty().bind(new SimpleDoubleProperty(posZ));
         super.setHeight(50);
         super.setRadius(20);
         PhongMaterial matVaisseau = new PhongMaterial();
         matVaisseau.setDiffuseColor(Color.RED);
         super.setMaterial(matVaisseau);
-        new Controlleur(this,subScene);
+        new Controlleur(this,scene);
     }
 
     public Vecteur3 r(Planete planete) {

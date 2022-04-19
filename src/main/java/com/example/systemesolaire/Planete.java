@@ -126,7 +126,7 @@ public class Planete extends Sphere {
         }
 
         BorderPane bp = (BorderPane)infoPlanete.getChildren().get(0);
-        orbitPath = new com.example.systemesolaire.PolyLine3D(listPoints3D, 15, Color.ORANGE, com.example.systemesolaire.PolyLine3D.LineType.TRIANGLE);
+        orbitPath = new com.example.systemesolaire.PolyLine3D(listPoints3D, 15, Color.PURPLE, com.example.systemesolaire.PolyLine3D.LineType.TRIANGLE);
 
         orbitPath.setOnMousePressed(mouseEvent -> {
             if (mouseEvent.isPrimaryButtonDown())
