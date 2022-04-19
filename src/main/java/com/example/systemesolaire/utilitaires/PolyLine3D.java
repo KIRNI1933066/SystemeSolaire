@@ -1,5 +1,6 @@
-package com.example.systemesolaire;
+package com.example.systemesolaire.utilitaires;
 
+import com.example.systemesolaire.utilitaires.Vecteur3;
 import javafx.scene.AmbientLight;
 import javafx.scene.DepthTest;
 import javafx.scene.Group;

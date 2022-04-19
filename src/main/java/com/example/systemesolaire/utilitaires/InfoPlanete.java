@@ -1,5 +1,7 @@
-package com.example.systemesolaire;
+package com.example.systemesolaire.utilitaires;
 
+import com.example.systemesolaire.Main;
+import com.example.systemesolaire.corpscelestes.Planete;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;

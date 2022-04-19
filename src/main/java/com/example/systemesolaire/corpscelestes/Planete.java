@@ -1,5 +1,11 @@
-package com.example.systemesolaire;
+package com.example.systemesolaire.corpscelestes;
 
+import com.example.systemesolaire.utilitaires.Orbit;
+import com.example.systemesolaire.controllers.Controlleur;
+import com.example.systemesolaire.utilitaires.Constantes;
+import com.example.systemesolaire.utilitaires.InfoPlanete;
+import com.example.systemesolaire.utilitaires.PolyLine3D;
+import com.example.systemesolaire.utilitaires.Vecteur3;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
@@ -22,7 +28,7 @@ public class Planete extends Sphere {
     public String name;
     private Orbit orbit;
     private double periapsis, apoapsis;
-    private com.example.systemesolaire.PolyLine3D orbitPath;
+    private PolyLine3D orbitPath;
     private double radius;
     private InfoPlanete infoPlanete;
     public double masse;
@@ -34,7 +40,7 @@ public class Planete extends Sphere {
         PhongMaterial mat = new PhongMaterial();
         mat.setDiffuseMap(new Image(texture));
         super.setMaterial(mat);
-        position = new com.example.systemesolaire.Vecteur3();
+        position = new Vecteur3();
         super.setTranslateX(position.getX());
         super.setTranslateY(position.getY());
         super.translateXProperty().bind(position.XProperty());
@@ -100,7 +106,7 @@ public class Planete extends Sphere {
     public Planete() {}
 
 
-    public void updateOrbitPath(com.example.systemesolaire.Vecteur3 sunPosition, int indexPlanete) {
+    public void updateOrbitPath(Vecteur3 sunPosition, int indexPlanete) {
         if (orbitPath != null) {
             com.example.systemesolaire.Main.systeme.getChildren().remove(orbitPath);
         }
@@ -114,7 +120,7 @@ public class Planete extends Sphere {
         }
 
         BorderPane bp = (BorderPane)infoPlanete.getChildren().get(0);
-        orbitPath = new com.example.systemesolaire.PolyLine3D(listPoints3D, 15, Color.PURPLE, com.example.systemesolaire.PolyLine3D.LineType.TRIANGLE);
+        orbitPath = new PolyLine3D(listPoints3D, 15, Color.PURPLE, PolyLine3D.LineType.TRIANGLE);
 
         orbitPath.setOnMousePressed(mouseEvent -> {
             if (mouseEvent.isPrimaryButtonDown())
@@ -162,8 +168,8 @@ public class Planete extends Sphere {
         drawPath = false;
     }
 
-    public void updatePosition(com.example.systemesolaire.Vecteur3 sunPosition, double t, int indexPlanete) {
-        com.example.systemesolaire.Vecteur3 newPosition = orbit.findOrbitPoint(sunPosition, periapsis/ ECHELLE, apoapsis/ ECHELLE, t);
+    public void updatePosition(Vecteur3 sunPosition, double t, int indexPlanete) {
+        Vecteur3 newPosition = orbit.findOrbitPoint(sunPosition, periapsis/ ECHELLE, apoapsis/ ECHELLE, t);
         position.setX(newPosition.getX());
         position.setY(newPosition.getY());
 
