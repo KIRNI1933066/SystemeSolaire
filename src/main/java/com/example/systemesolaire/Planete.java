@@ -38,7 +38,7 @@ public class Planete extends Sphere {
     public Planete (double radius, Color color, double periapsis, double apoapsis, String name, String texture, int i, double masse) throws FileNotFoundException {
         super(radius);
         PhongMaterial mat = new PhongMaterial();
-        mat.setDiffuseMap(new Image(new FileInputStream(texture)));
+        mat.setDiffuseMap(new Image(texture));
         super.setMaterial(mat);
         position = new com.example.systemesolaire.Vecteur2(0, 0);
         super.setTranslateX(position.getX());
