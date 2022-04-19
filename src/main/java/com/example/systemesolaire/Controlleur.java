@@ -49,9 +49,9 @@ public class Controlleur {
                 zoom
         );
 
-        Vecteur2 basePos = new Vecteur2();
-        Vecteur2 basePivot = new Vecteur2(pivot.getX(), pivot.getY());
-        Vecteur2 baseRotate = new Vecteur2();
+        Vecteur3 basePos = new Vecteur3();
+        Vecteur3 basePivot = new Vecteur3(pivot.getX(), pivot.getY(), pivot.getZ());
+        Vecteur3 baseRotate = new Vecteur3();
         pivot.xProperty().bind(vaisseau.translateXProperty());
         pivot.yProperty().bind(vaisseau.translateYProperty());
 
