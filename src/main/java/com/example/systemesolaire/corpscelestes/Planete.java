@@ -22,7 +22,7 @@ import java.util.List;
 
 import static com.example.systemesolaire.Main.*;
 
-public class Planete extends Sphere {
+public class Planete extends Sphere implements ICorpsCelestes {
 
     private Vecteur3 position;
     public String nom;
@@ -177,5 +177,13 @@ public class Planete extends Sphere {
 
     public double getRadiusPlanete() {
         return rayon;
+    }
+
+    public Vecteur3 getPosition() {
+        return position;
+    }
+
+    public double getMU() {
+        return Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).mu;
     }
 }

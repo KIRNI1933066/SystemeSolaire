@@ -1,7 +1,9 @@
 package com.example.systemesolaire;
 
 import com.example.systemesolaire.controllers.Controlleur;
+import com.example.systemesolaire.corpscelestes.ICorpsCelestes;
 import com.example.systemesolaire.corpscelestes.Planete;
+import com.example.systemesolaire.corpscelestes.Soleil;
 import com.example.systemesolaire.corpscelestes.Vaisseau;
 import com.example.systemesolaire.utilitaires.Constantes;
 import com.example.systemesolaire.utilitaires.Skybox;
@@ -34,7 +36,7 @@ public class Main extends Application {
 
 
     public static final double ECHELLE = 400000;
-    public static final Vecteur3 POS_SOLEIL = new Vecteur3();
+    public static final Vecteur3 POS_SOLEIL = Vecteur3.ZERO;
     private static final int LARGEUR_SCENE = 1000;
     private static final int HAUTEUR_SCENE = 1000;
     private static double temps = 0;
@@ -45,6 +47,7 @@ public class Main extends Application {
     public static Group GROUP_SYSTEME_SOLAIRE = new Group();
     public static Group principal = new Group();
     private static final Planete[] PLANETES = new Planete[8];
+    private static final ICorpsCelestes[] CORPS_CELESTES = new ICorpsCelestes[PLANETES.length + 1];
     private static LocalDateTime tempsReel;
     @Override
     public void start(Stage stage) {
@@ -76,18 +79,24 @@ public class Main extends Application {
         Skybox skybox = new Skybox(top,bot,left,right,front,back,1000000,camera);
         GROUP_SYSTEME_SOLAIRE.getChildren().addAll(skybox);
 
-        Sphere soleil = new Sphere(10);
+        Sphere sphereSoleil = new Sphere(10);
         PhongMaterial matSoleil = new PhongMaterial();
         matSoleil.setDiffuseColor(Color.ORANGE);
         matSoleil.setSelfIlluminationMap(vide);
-        soleil.setMaterial(matSoleil);
-        GROUP_SYSTEME_SOLAIRE.getChildren().addAll(soleil);
+        sphereSoleil.setMaterial(matSoleil);
+        GROUP_SYSTEME_SOLAIRE.getChildren().addAll(sphereSoleil);
+
+        Soleil soleil = new Soleil(POS_SOLEIL);
+        CORPS_CELESTES[0] = soleil;
 
         Slider sliderVitesseTemps = new Slider(0.05,500,5);
         sliderVitesseTemps.setTranslateY(30);
         sliderVitesseTemps.setTranslateX(20);
 
-        Vaisseau vaisseau = new Vaisseau(PLANETES,new Vecteur3(0,0,0));
+        int max = 10000;
+        int min = 600;
+        Vecteur3 positionRandom = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min), (0));
+        Vaisseau vaisseau = new Vaisseau(CORPS_CELESTES, positionRandom);
 
         new Controlleur(stage,scene2D,camera,vaisseau);
 
@@ -100,14 +109,13 @@ public class Main extends Application {
                     new Rotate(infoPlanetes[i].inclination, Rotate.X_AXIS),
                     new Rotate(infoPlanetes[i].inclination, Rotate.Y_AXIS));
             GROUP_SYSTEME_SOLAIRE.getChildren().add(planeteSeule);
+            CORPS_CELESTES[i + 1] = PLANETES[i];
         }
 
         long startNanoTime = System.nanoTime();
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-
-                vaisseau.updatePosition();
                 double vitesseBase = V_BASE_TERRE * sliderVitesseTemps.valueProperty().get();
 
                 tempsReel = tempsReel.plusSeconds((long)(vitesseBase * 3.156E7));
@@ -138,6 +146,9 @@ public class Main extends Application {
                         case "Neptune" -> planet.updatePosition(POS_SOLEIL, TEMPS_PLANETES[7],7);
                     }
                 }
+
+                vaisseau.updateVitesse();
+                vaisseau.updatePosition();
             }
         }.start();
 
@@ -165,9 +176,14 @@ public class Main extends Application {
         exit.setStyle("-fx-background-color: #8A2BE2;");
         exit.setFont(font);
         exit.setOnAction(ev -> {
+            vaisseau.setBouger(false);
+            Vecteur3 posRand = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min), (0));
+            vaisseau.setVitesse(new Vecteur3(1000, 200, 0));
+            vaisseau.setPosition(posRand);
             racine3D.getChildren().remove(GROUP_SYSTEME_SOLAIRE);
             principal.getChildren().removeAll(sliderVitesseTemps, exit, tempsReelText, sceneSystemeSolaire);
             principal.getChildren().addAll(menu);
+            GROUP_SYSTEME_SOLAIRE.getChildren().remove(vaisseau);
         });
 
         Button bouttonSysteme = new Button("Système Solaire");

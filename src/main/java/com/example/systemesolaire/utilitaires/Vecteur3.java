@@ -5,6 +5,7 @@ import javafx.beans.property.DoublePropertyBase;
 
 public class Vecteur3 {
 
+    public final static Vecteur3 ZERO = new Vecteur3(0, 0, 0);
     private DoubleProperty x,y,z;
 
     public Vecteur3() {
@@ -96,6 +97,11 @@ public class Vecteur3 {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
     }
 
+    public static Vecteur3 soustraire(Vecteur3 vecteurA, Vecteur3 vecteurB)
+    {
+        return new Vecteur3(vecteurA.getX() - vecteurB.getX(), vecteurA.getY() - vecteurB.getY(), vecteurA.getZ() - vecteurB.getZ());
+    }
+
     public void add(double x, double y, double z) {
         this.setX(getX() + x);
         this.setY(getY() + y);
@@ -122,8 +128,18 @@ public class Vecteur3 {
         return (this.getX() == other.getX() && this.getY() == other.getY() && this.getZ() == other.getZ());
     }
 
-    public float normaliser() {
-        return (float)Math.sqrt(((this.getX()) * (this.getX()) + ((this.getY()) * (this.getY()))));
+    public double norme() {
+        return Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
+    }
+
+    public double normeSqr()
+    {
+        return (this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
+    }
+
+    public Vecteur3 normalizer()
+    {
+        return new Vecteur3(this.getX() / norme(), this.getY() / norme(), this.getZ() / norme());
     }
 
 
