@@ -3,7 +3,7 @@ package com.example.systemesolaire.corpscelestes;
 import com.example.systemesolaire.utilitaires.Orbit;
 import com.example.systemesolaire.controllers.Controlleur;
 import com.example.systemesolaire.utilitaires.Constantes;
-import com.example.systemesolaire.utilitaires.InfoPlanete;
+import com.example.systemesolaire.utilitaires.InfoPlaneteUI;
 import com.example.systemesolaire.utilitaires.PolyLine3D;
 import com.example.systemesolaire.utilitaires.Vecteur3;
 import javafx.application.Platform;
@@ -30,7 +30,7 @@ public class Planete extends Sphere {
     private double periapsis, apoapsis;
     private PolyLine3D orbitPath;
     private double rayon;
-    private InfoPlanete infoPlanete;
+    private InfoPlaneteUI infoPlaneteUI;
     public double masse;
 
     private boolean drawPath = true;
@@ -65,12 +65,12 @@ public class Planete extends Sphere {
         this.masse = masse;
         orbit = new Orbit(1000);
 
-        infoPlanete = new InfoPlanete(this);
-        BorderPane bp = (BorderPane)infoPlanete.getChildren().get(0);
-        infoPlanete.setVisible(false);
-        principal.getChildren().add(infoPlanete);
-        Platform.runLater(() -> principal.getChildren().remove(infoPlanete));
-        position.XProperty().addListener((observable, oldVal, newVal) -> infoPlanete.setDistanceSoleil(Vecteur3.distanceTo(position, POS_SOLEIL)));
+        infoPlaneteUI = new InfoPlaneteUI(this);
+        BorderPane bp = (BorderPane) infoPlaneteUI.getChildren().get(0);
+        infoPlaneteUI.setVisible(false);
+        principal.getChildren().add(infoPlaneteUI);
+        Platform.runLater(() -> principal.getChildren().remove(infoPlaneteUI));
+        position.XProperty().addListener((observable, oldVal, newVal) -> infoPlaneteUI.setDistanceSoleil(Vecteur3.distanceTo(position, POS_SOLEIL)));
 
         super.setOnMousePressed(mouseEvent -> {
             if (mouseEvent.isPrimaryButtonDown())
@@ -90,18 +90,18 @@ public class Planete extends Sphere {
             }
         });
         super.setOnMouseEntered(mouseEvent -> {
-            if (!principal.getChildren().contains(infoPlanete))
+            if (!principal.getChildren().contains(infoPlaneteUI))
             {
-                infoPlanete.setVisible(false);
-                principal.getChildren().add(infoPlanete);
+                infoPlaneteUI.setVisible(false);
+                principal.getChildren().add(infoPlaneteUI);
             }
             Platform.runLater(() -> {
-                infoPlanete.setTranslateX(principal.getScene().getWidth() - bp.getWidth() - 20);
-                infoPlanete.setTranslateY(principal.getScene().getHeight()/2 - bp.getHeight()/2);
-                infoPlanete.setVisible(true);
+                infoPlaneteUI.setTranslateX(principal.getScene().getWidth() - bp.getWidth() - 20);
+                infoPlaneteUI.setTranslateY(principal.getScene().getHeight()/2 - bp.getHeight()/2);
+                infoPlaneteUI.setVisible(true);
             });
         });
-        super.setOnMouseExited(mouseEvent -> principal.getChildren().remove(infoPlanete));
+        super.setOnMouseExited(mouseEvent -> principal.getChildren().remove(infoPlaneteUI));
     }
 
     public void updateOrbitPath(Vecteur3 sunPosition, int indexPlanete) {
@@ -117,7 +117,7 @@ public class Planete extends Sphere {
             listPoints3D.add(new Vecteur3(lineTo.getX(), lineTo.getY(), 0));
         }
 
-        BorderPane bp = (BorderPane)infoPlanete.getChildren().get(0);
+        BorderPane bp = (BorderPane) infoPlaneteUI.getChildren().get(0);
         orbitPath = new PolyLine3D(listPoints3D, 15, Color.PURPLE, PolyLine3D.LineType.TRIANGLE);
 
         orbitPath.setOnMousePressed(mouseEvent -> {
@@ -139,19 +139,19 @@ public class Planete extends Sphere {
         });
         orbitPath.setOnMouseEntered(mouseEvent -> {
             super.setMouseTransparent(true);
-            if (!principal.getChildren().contains(infoPlanete))
+            if (!principal.getChildren().contains(infoPlaneteUI))
             {
-                infoPlanete.setVisible(false);
-                principal.getChildren().add(infoPlanete);
+                infoPlaneteUI.setVisible(false);
+                principal.getChildren().add(infoPlaneteUI);
             }
             Platform.runLater(() -> {
-                infoPlanete.setTranslateX(principal.getScene().getWidth() - bp.getWidth() - 20);
-                infoPlanete.setTranslateY(principal.getScene().getHeight()/2 - bp.getHeight()/2);
-                infoPlanete.setVisible(true);
+                infoPlaneteUI.setTranslateX(principal.getScene().getWidth() - bp.getWidth() - 20);
+                infoPlaneteUI.setTranslateY(principal.getScene().getHeight()/2 - bp.getHeight()/2);
+                infoPlaneteUI.setVisible(true);
             });
         });
         orbitPath.setOnMouseExited(mouseEvent -> {
-            principal.getChildren().remove(infoPlanete);
+            principal.getChildren().remove(infoPlaneteUI);
             super.setMouseTransparent(false);
         });
 

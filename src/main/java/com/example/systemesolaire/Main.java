@@ -19,10 +19,14 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Period;
 
 public class Main extends Application {
 
@@ -58,6 +62,8 @@ public class Main extends Application {
         camera.setNearClip(1);
         camera.setFarClip(1000000);
 
+        final LocalDateTime[] ld = {LocalDateTime.of(0, Month.JANUARY, 1, 0, 0)};
+        Text tempsReelText = new Text(ld[0].toString());
         PointLight pointLight = new PointLight();
         pointLight.setColor(Color.ORANGE);
         GROUP_SYSTEME_SOLAIRE.getChildren().add(pointLight);
@@ -92,10 +98,18 @@ public class Main extends Application {
             GROUP_SYSTEME_SOLAIRE.getChildren().add(planeteSeule);
         }
 
+        long startNanoTime = System.nanoTime();
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
+                double t = (currentNanoTime - startNanoTime) / 1000000000.0;
+
                 vaisseau.updatePosition();
                 double vitesseBase = V_BASE_TERRE * sliderVitesseTemps.valueProperty().get();
+
+                ld[0] = ld[0].plusSeconds((long)(vitesseBase * 3.156E7));
+                System.out.println(vitesseBase);
+                tempsReelText.setText(ld[0].toString());
+
                 temps = temps + sliderVitesseTemps.valueProperty().get();
                 for (int i = 0; i < TEMPS_PLANETES.length; i++) {
                     TEMPS_PLANETES[i] = TEMPS_PLANETES[i] + vitesseBase * FACTEURS_VITESSE[i];
@@ -128,13 +142,18 @@ public class Main extends Application {
         menu.setPrefSize(LARGEUR_SCENE, HAUTEUR_SCENE);
         VBox vb = new VBox();
         Font font = Font.font("Courier New", FontWeight.BOLD, 20);
+        tempsReelText.setFont(new Font(20));
+        tempsReelText.setFill(Color.WHITE);
+        tempsReelText.setTranslateX(stage.getWidth()/2);
+        tempsReelText.setTranslateY(50);
         Button exit = new Button("X");
-        exit.setTranslateX(1050);
+        exit.setTranslateX(stage.getWidth() - 50);
+        exit.setTranslateY(20);
         exit.setStyle("-fx-background-color: #8A2BE2;");
         exit.setFont(font);
         exit.setOnAction(ev -> {
             racine3D.getChildren().remove(GROUP_SYSTEME_SOLAIRE);
-            principal.getChildren().removeAll(sliderVitesseTemps,exit,sceneSystemeSolaire);
+            principal.getChildren().removeAll(sliderVitesseTemps, exit, tempsReelText, sceneSystemeSolaire);
             principal.getChildren().addAll(menu);
         });
 
@@ -143,7 +162,7 @@ public class Main extends Application {
         bouttonSysteme.setFont(font);
         bouttonSysteme.setOnAction(ev -> {
             principal.getChildren().remove(menu);
-            principal.getChildren().addAll(sceneSystemeSolaire,sliderVitesseTemps,exit);
+            principal.getChildren().addAll(sceneSystemeSolaire, sliderVitesseTemps, exit, tempsReelText);
             racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
             GROUP_SYSTEME_SOLAIRE.getChildren().remove(vaisseau);
         });
@@ -153,7 +172,7 @@ public class Main extends Application {
         bouttonVaisseau.setFont(font);
         bouttonVaisseau.setOnAction(ev -> {
             principal.getChildren().remove(menu);
-            principal.getChildren().addAll(sceneSystemeSolaire,sliderVitesseTemps,exit);
+            principal.getChildren().addAll(sceneSystemeSolaire, sliderVitesseTemps, exit, tempsReelText);
             racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
             vaisseau.setBouger(true);
             GROUP_SYSTEME_SOLAIRE.getChildren().addAll(vaisseau);
@@ -178,6 +197,8 @@ public class Main extends Application {
         stage.widthProperty().addListener((observable -> {
             sceneSystemeSolaire.setWidth(stage.getWidth());
             menu.setPrefWidth(stage.getWidth());
+            exit.setTranslateX(stage.getWidth() - 75);
+            tempsReelText.setTranslateX(stage.getWidth()/2);
         }));
         stage.heightProperty().addListener((observable -> {
             sceneSystemeSolaire.setHeight(stage.getHeight());

@@ -12,12 +12,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import java.text.NumberFormat;
 
-    public class InfoPlanete extends Group {
+    public class InfoPlaneteUI extends Group {
 
         private final Text TEXT_DISTANCE_SOLEIL = new Text();
         private final NumberFormat FORMAT_NOMBRE = NumberFormat.getInstance();
 
-        public InfoPlanete(Planete planete) {
+        public InfoPlaneteUI(Planete planete) {
             FORMAT_NOMBRE.setMaximumFractionDigits(2);
             FORMAT_NOMBRE.setMinimumFractionDigits(0);
 
@@ -52,7 +52,7 @@ import java.text.NumberFormat;
 
             TEXT_DISTANCE_SOLEIL.getStyleClass().add("textInfo");
 
-            Text tempsPourOrbitPlanete = new Text("Temps pour une année :\n" + Constantes.InfoPlanetes.valueOf(planete.nom.toUpperCase()).mu);
+            Text tempsPourOrbitPlanete = new Text("Temps pour une orbite :\n" + Constantes.InfoPlanetes.valueOf(planete.nom.toUpperCase()).tempsOrbite);
             tempsPourOrbitPlanete.getStyleClass().add("textInfo");
 
             informationVBox.getChildren().addAll(nomPlanete, rayonPlanete, massePlanete, TEXT_DISTANCE_SOLEIL, tempsPourOrbitPlanete);
