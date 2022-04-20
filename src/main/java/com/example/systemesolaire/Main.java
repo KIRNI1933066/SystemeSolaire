@@ -66,6 +66,7 @@ public class Main extends Application {
 
         final LocalDateTime[] ld = {LocalDateTime.of(0, Month.JANUARY, 1, 0, 0)};
         Label tempsReelText = new Label("Temps : " + ld[0].getYear() + " ans, " + ld[0].getMonthValue() + " mois, " + ld[0].getDayOfMonth() + " jours, " + ld[0].getHour() + "h, " + ld[0].getMinute() + " m, " + ld[0].getSecond() + " s");
+
         PointLight pointLight = new PointLight();
         pointLight.setColor(Color.ORANGE);
         GROUP_SYSTEME_SOLAIRE.getChildren().add(pointLight);
@@ -146,6 +147,12 @@ public class Main extends Application {
         tempsReelText.setFont(font);
         tempsReelText.setTextFill(Color.WHITE);
         tempsReelText.setTranslateY(20);
+        tempsReelText.widthProperty().addListener((observableValue, oldVal, newVal) -> {
+            if (Math.abs(newVal.intValue() - oldVal.intValue()) > 50)
+            {
+                tempsReelText.setTranslateX(stage.getWidth()/2 - tempsReelText.getWidth()/2);
+            }
+        });
         Button exit = new Button("X");
         exit.setTranslateX(stage.getWidth() - 50);
         exit.setTranslateY(20);
@@ -203,7 +210,6 @@ public class Main extends Application {
         stage.heightProperty().addListener((observable -> {
             sceneSystemeSolaire.setHeight(stage.getHeight());
             menu.setPrefHeight(stage.getHeight());
-
         }));
         stage.show();
 
