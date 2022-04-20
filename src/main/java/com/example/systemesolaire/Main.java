@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -20,6 +21,7 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -63,7 +65,7 @@ public class Main extends Application {
         camera.setFarClip(1000000);
 
         final LocalDateTime[] ld = {LocalDateTime.of(0, Month.JANUARY, 1, 0, 0)};
-        Text tempsReelText = new Text(ld[0].toString());
+        Label tempsReelText = new Label("Temps : " + ld[0].getYear() + " ans, " + ld[0].getMonthValue() + " mois, " + ld[0].getDayOfMonth() + " jours, " + ld[0].getHour() + "h, " + ld[0].getMinute() + " m, " + ld[0].getSecond() + " s");
         PointLight pointLight = new PointLight();
         pointLight.setColor(Color.ORANGE);
         GROUP_SYSTEME_SOLAIRE.getChildren().add(pointLight);
@@ -107,8 +109,7 @@ public class Main extends Application {
                 double vitesseBase = V_BASE_TERRE * sliderVitesseTemps.valueProperty().get();
 
                 ld[0] = ld[0].plusSeconds((long)(vitesseBase * 3.156E7));
-                System.out.println(vitesseBase);
-                tempsReelText.setText(ld[0].toString());
+                tempsReelText.setText("Temps : " + ld[0].getYear() + " ans, " + ld[0].getMonthValue() + " mois, " + ld[0].getDayOfMonth() + " jours, " + ld[0].getHour() + "h, " + ld[0].getMinute() + " m, " + ld[0].getSecond() + " s");
 
                 temps = temps + sliderVitesseTemps.valueProperty().get();
                 for (int i = 0; i < TEMPS_PLANETES.length; i++) {
@@ -142,10 +143,9 @@ public class Main extends Application {
         menu.setPrefSize(LARGEUR_SCENE, HAUTEUR_SCENE);
         VBox vb = new VBox();
         Font font = Font.font("Courier New", FontWeight.BOLD, 20);
-        tempsReelText.setFont(new Font(20));
-        tempsReelText.setFill(Color.WHITE);
-        tempsReelText.setTranslateX(stage.getWidth()/2);
-        tempsReelText.setTranslateY(50);
+        tempsReelText.setFont(font);
+        tempsReelText.setTextFill(Color.WHITE);
+        tempsReelText.setTranslateY(20);
         Button exit = new Button("X");
         exit.setTranslateX(stage.getWidth() - 50);
         exit.setTranslateY(20);
@@ -198,7 +198,7 @@ public class Main extends Application {
             sceneSystemeSolaire.setWidth(stage.getWidth());
             menu.setPrefWidth(stage.getWidth());
             exit.setTranslateX(stage.getWidth() - 75);
-            tempsReelText.setTranslateX(stage.getWidth()/2);
+            tempsReelText.setTranslateX(stage.getWidth()/2 - tempsReelText.getWidth()/2);
         }));
         stage.heightProperty().addListener((observable -> {
             sceneSystemeSolaire.setHeight(stage.getHeight());
@@ -206,6 +206,8 @@ public class Main extends Application {
 
         }));
         stage.show();
+
+        tempsReelText.setTranslateX(stage.getWidth()/2 - tempsReelText.getWidth()/2);
     }
 
     public static void main(String[] args) {
