@@ -45,6 +45,7 @@ public class Main extends Application {
     public static Group GROUP_SYSTEME_SOLAIRE = new Group();
     public static Group principal = new Group();
     private static final Planete[] PLANETES = new Planete[8];
+    private static LocalDateTime tempsReel;
     @Override
     public void start(Stage stage) {
 
@@ -64,8 +65,8 @@ public class Main extends Application {
         camera.setNearClip(1);
         camera.setFarClip(1000000);
 
-        final LocalDateTime[] ld = {LocalDateTime.of(0, Month.JANUARY, 1, 0, 0)};
-        Label tempsReelText = new Label("Temps : " + ld[0].getYear() + " ans, " + ld[0].getMonthValue() + " mois, " + ld[0].getDayOfMonth() + " jours, " + ld[0].getHour() + "h, " + ld[0].getMinute() + " m, " + ld[0].getSecond() + " s");
+        tempsReel = LocalDateTime.of(0, Month.JANUARY, 1, 0, 0);
+        Label tempsReelText = new Label();
 
         PointLight pointLight = new PointLight();
         pointLight.setColor(Color.ORANGE);
@@ -109,8 +110,13 @@ public class Main extends Application {
                 vaisseau.updatePosition();
                 double vitesseBase = V_BASE_TERRE * sliderVitesseTemps.valueProperty().get();
 
-                ld[0] = ld[0].plusSeconds((long)(vitesseBase * 3.156E7));
-                tempsReelText.setText("Temps : " + ld[0].getYear() + " ans, " + ld[0].getMonthValue() + " mois, " + ld[0].getDayOfMonth() + " jours, " + ld[0].getHour() + "h, " + ld[0].getMinute() + " m, " + ld[0].getSecond() + " s");
+                tempsReel = tempsReel.plusSeconds((long)(vitesseBase * 3.156E7));
+                tempsReelText.setText("Temps : " + tempsReel.getYear() + " ans, " +
+                        tempsReel.getMonthValue() + " mois, " +
+                        tempsReel.getDayOfMonth() + " jours, " +
+                        tempsReel.getHour() + "h, " +
+                        tempsReel.getMinute() + " m, " +
+                        tempsReel.getSecond() + " s");
 
                 temps = temps + sliderVitesseTemps.valueProperty().get();
                 for (int i = 0; i < TEMPS_PLANETES.length; i++) {
