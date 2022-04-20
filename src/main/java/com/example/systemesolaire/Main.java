@@ -13,7 +13,6 @@ import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -51,7 +50,6 @@ public class Main extends Application {
         Image left = new Image(Constantes.IMAGES_PATH + "bkg1_left.jpg");
         Image right = new Image(Constantes.IMAGES_PATH + "bkg1_right.jpg");
         Image top = new Image(Constantes.IMAGES_PATH + "bkg1_top.jpg");
-        ImageView imageMenu = new ImageView(menuImage);
 
         Scene scene2D = new Scene(principal, LARGEUR_SCENE, HAUTEUR_SCENE);
         scene2D.getStylesheets().add("file:src/main/java/com/example/systemesolaire/css/infoplanete.css");
@@ -96,11 +94,7 @@ public class Main extends Application {
 
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
-                try {
-                    vaisseau.updatePosition();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                vaisseau.updatePosition();
                 double vitesseBase = V_BASE_TERRE * sliderVitesseTemps.valueProperty().get();
                 temps = temps + sliderVitesseTemps.valueProperty().get();
                 for (int i = 0; i < TEMPS_PLANETES.length; i++) {
@@ -111,7 +105,7 @@ public class Main extends Application {
                 if (temps > 1)
                     temps = 0;
                 for (Planete planet : PLANETES) {
-                    switch (planet.name) {
+                    switch (planet.nom) {
                         case "Mercure" -> planet.updatePosition(POS_SOLEIL, TEMPS_PLANETES[0],0);
                         case "Venus" -> planet.updatePosition(POS_SOLEIL, TEMPS_PLANETES[1],1);
                         case "Terre" -> planet.updatePosition(POS_SOLEIL, TEMPS_PLANETES[2],2);

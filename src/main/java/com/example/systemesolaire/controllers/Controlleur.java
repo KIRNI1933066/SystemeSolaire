@@ -65,6 +65,11 @@ public class Controlleur {
         {
             if (mouseEvent.isPrimaryButtonDown())
             {
+                if (mouseEvent.isStillSincePress())
+                {
+                    return;
+                }
+
                 if (pivot.xProperty().isBound())
                 {
                     pivot.xProperty().unbind();

@@ -5,7 +5,6 @@ import javafx.beans.property.DoublePropertyBase;
 
 public class Vecteur3 {
 
-
     private DoubleProperty x,y,z;
 
     public Vecteur3() {

@@ -11,12 +11,10 @@ import java.util.Random;
 
 public class Vaisseau extends Sphere {
 
-    private Planete[] planetes;
-    private Vecteur3 vitesse, position;
+    private final Planete[] planetes;
+    private final Vecteur3 vitesse, position;
     private boolean bouger = false;
-    private Random rand = new Random();
-    private float min = -100;
-    private float max = 100;
+    private final Random rand = new Random();
 
     public Vaisseau(Planete[] planetes, Vecteur3 position) {
         this.planetes = planetes;
@@ -25,8 +23,10 @@ public class Vaisseau extends Sphere {
         matVaisseau.setDiffuseColor(Color.RED);
         super.setMaterial(matVaisseau);
         this.position = position;
+        float min = -100;
+        float max = 100;
         vitesse = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min),
-        (Math.random() * (max - min) + min));
+                (0));
         super.translateXProperty().bind(position.XProperty());
         super.translateYProperty().bind(position.YProperty());
         super.translateZProperty().bind(position.ZProperty());
@@ -38,7 +38,7 @@ public class Vaisseau extends Sphere {
                 planete.getTranslateZ() - position.getZ());
     }
 
-    public Planete planetePlusProche() throws FileNotFoundException {
+    public Planete planetePlusProche() {
         Planete plusProche = null;
         double distanceMin = 100000000;
         double normR;
@@ -53,7 +53,7 @@ public class Vaisseau extends Sphere {
         return plusProche;
     }
 
-    public void updatePosition() throws FileNotFoundException {
+    public void updatePosition() {
         if (bouger) {
             Planete planetePlusProche = planetePlusProche();
             if (planetePlusProche == null) {
@@ -61,7 +61,7 @@ public class Vaisseau extends Sphere {
                 System.out.println("aucune planete");
                 return;
             }
-            String nom = planetePlusProche.name;
+            String nom = planetePlusProche.nom;
             System.out.println(nom.toUpperCase() + position);
             double mu = Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).mu;
             Vecteur3 r = r(planetePlusProche);

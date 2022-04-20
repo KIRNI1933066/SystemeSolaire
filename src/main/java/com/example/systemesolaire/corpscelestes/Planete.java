@@ -25,18 +25,18 @@ import static com.example.systemesolaire.Main.*;
 public class Planete extends Sphere {
 
     private Vecteur3 position;
-    public String name;
+    public String nom;
     private Orbit orbit;
     private double periapsis, apoapsis;
     private PolyLine3D orbitPath;
-    private double radius;
+    private double rayon;
     private InfoPlanete infoPlanete;
     public double masse;
 
     private boolean drawPath = true;
 
-    public Planete (double radius, double periapsis, double apoapsis, String name, String texture, int i, double masse) {
-        super(radius);
+    public Planete (double rayon, double periapsis, double apoapsis, String nom, String texture, int i, double masse) {
+        super(rayon);
         PhongMaterial mat = new PhongMaterial();
         mat.setDiffuseMap(new Image(texture));
         super.setMaterial(mat);
@@ -58,12 +58,12 @@ public class Planete extends Sphere {
         rotationX.angleProperty().bind(new SimpleDoubleProperty(infoPlanetes[i].inclination));
         rotationY.angleProperty().bind(new SimpleDoubleProperty(infoPlanetes[i].inclination));
 
-        this.name = name;
+        this.nom = nom;
         this.apoapsis = apoapsis;
         this.periapsis = periapsis;
-        this.radius = radius;
+        this.rayon = rayon;
         this.masse = masse;
-        orbit = new Orbit(5000);
+        orbit = new Orbit(1000);
 
         infoPlanete = new InfoPlanete(this);
         BorderPane bp = (BorderPane)infoPlanete.getChildren().get(0);
@@ -103,8 +103,6 @@ public class Planete extends Sphere {
         });
         super.setOnMouseExited(mouseEvent -> principal.getChildren().remove(infoPlanete));
     }
-    public Planete() {}
-
 
     public void updateOrbitPath(Vecteur3 sunPosition, int indexPlanete) {
         if (orbitPath != null) {
@@ -178,6 +176,6 @@ public class Planete extends Sphere {
     }
 
     public double getRadiusPlanete() {
-        return radius;
+        return rayon;
     }
 }

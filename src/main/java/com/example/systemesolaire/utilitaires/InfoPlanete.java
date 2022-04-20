@@ -28,7 +28,7 @@ import java.text.NumberFormat;
             fond.getStyleClass().add("fond");
             VBox informationVBox = new VBox();
             try {
-                Image image = new Image(Constantes.IMAGES_PATH + planete.name + ".png");
+                Image image = new Image(Constantes.IMAGES_PATH + planete.nom + ".png");
                 ImageView imageView = new ImageView(image);
                 imageView.setPreserveRatio(true);
                 imageView.setFitWidth(150);
@@ -36,12 +36,12 @@ import java.text.NumberFormat;
 
             } catch (Exception exception)
             {
-                System.out.println("Image introuvable! Pour la planete : " + planete.name);
+                System.out.println("Image introuvable! Pour la planete : " + planete.nom);
             }
 
             informationVBox.setPrefSize(200, 600);
 
-            Text nomPlanete = new Text(planete.name);
+            Text nomPlanete = new Text(planete.nom);
             nomPlanete.getStyleClass().addAll("textInfo", "textInfoGras");
 
             Text rayonPlanete = new Text("Rayon : " + FORMAT_NOMBRE.format(planete.getRadiusPlanete() * Constantes.ECHELLE) + " km");
@@ -52,7 +52,7 @@ import java.text.NumberFormat;
 
             TEXT_DISTANCE_SOLEIL.getStyleClass().add("textInfo");
 
-            Text tempsPourOrbitPlanete = new Text("Temps pour une année :\n" + 365 + " jours");
+            Text tempsPourOrbitPlanete = new Text("Temps pour une année :\n" + Constantes.InfoPlanetes.valueOf(planete.nom.toUpperCase()).mu);
             tempsPourOrbitPlanete.getStyleClass().add("textInfo");
 
             informationVBox.getChildren().addAll(nomPlanete, rayonPlanete, massePlanete, TEXT_DISTANCE_SOLEIL, tempsPourOrbitPlanete);
