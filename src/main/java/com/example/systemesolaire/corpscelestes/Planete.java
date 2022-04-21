@@ -186,4 +186,8 @@ public class Planete extends Sphere implements ICorpsCelestes {
     public double getMU() {
         return Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).mu;
     }
+
+    public String getNom() {
+        return nom;
+    }
 }

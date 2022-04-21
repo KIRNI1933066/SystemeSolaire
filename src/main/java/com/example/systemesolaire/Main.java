@@ -36,7 +36,7 @@ public class Main extends Application {
 
 
     public static final double ECHELLE = 400000;
-    public static final Vecteur3 POS_SOLEIL = Vecteur3.ZERO;
+    public static final Vecteur3 POS_SOLEIL = new Vecteur3();
     private static final int LARGEUR_SCENE = 1000;
     private static final int HAUTEUR_SCENE = 1000;
     private static double temps = 0;
@@ -89,17 +89,9 @@ public class Main extends Application {
         Soleil soleil = new Soleil(POS_SOLEIL);
         CORPS_CELESTES[0] = soleil;
 
-        Slider sliderVitesseTemps = new Slider(0.05,500,5);
+        Slider sliderVitesseTemps = new Slider(0.0001,30,1);
         sliderVitesseTemps.setTranslateY(30);
         sliderVitesseTemps.setTranslateX(20);
-
-        int max = 10000;
-        int min = 600;
-        Vecteur3 positionRandom = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min), (0));
-        Vaisseau vaisseau = new Vaisseau(CORPS_CELESTES, positionRandom);
-
-        new Controlleur(stage,scene2D,camera,vaisseau);
-
 
         Constantes.InfoPlanetes[] infoPlanetes = Constantes.InfoPlanetes.values();
         for (int i = 0; i < PLANETES.length; i++) {
@@ -112,13 +104,20 @@ public class Main extends Application {
             CORPS_CELESTES[i + 1] = PLANETES[i];
         }
 
+        int max = -500;
+        int min = 500;
+        Vecteur3 positionRandom = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min), (0));
+        Vaisseau vaisseau = new Vaisseau(CORPS_CELESTES, new Vecteur3(100, -30, 0));
+
+        new Controlleur(stage,scene2D,camera,vaisseau);
+
         long startNanoTime = System.nanoTime();
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 double t = (currentNanoTime - startNanoTime) / 1000000000.0;
                 double vitesseBase = V_BASE_TERRE * sliderVitesseTemps.valueProperty().get();
 
-                tempsReel = tempsReel.plusSeconds((long)(vitesseBase * 3.156E7));
+                tempsReel = tempsReel.plusNanos((long)(vitesseBase * 3.156E16));
                 tempsReelText.setText("Temps : " + tempsReel.getYear() + " ans, " +
                         tempsReel.getMonthValue() + " mois, " +
                         tempsReel.getDayOfMonth() + " jours, " +
@@ -178,7 +177,7 @@ public class Main extends Application {
         exit.setOnAction(ev -> {
             vaisseau.setBouger(false);
             Vecteur3 posRand = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min), (0));
-            vaisseau.setVitesse(new Vecteur3(1000, 200, 0));
+            vaisseau.setVitesse(new Vecteur3(-0.5f, -1f, 0));
             vaisseau.setPosition(posRand);
             racine3D.getChildren().remove(GROUP_SYSTEME_SOLAIRE);
             principal.getChildren().removeAll(sliderVitesseTemps, exit, tempsReelText, sceneSystemeSolaire);
@@ -200,6 +199,8 @@ public class Main extends Application {
         bouttonVaisseau.setStyle("-fx-background-color: #8A2BE2;");
         bouttonVaisseau.setFont(font);
         bouttonVaisseau.setOnAction(ev -> {
+            Controlleur.getPivot().xProperty().bind(vaisseau.translateXProperty());
+            Controlleur.getPivot().yProperty().bind(vaisseau.translateYProperty());
             principal.getChildren().remove(menu);
             principal.getChildren().addAll(sceneSystemeSolaire, sliderVitesseTemps, exit, tempsReelText);
             racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);

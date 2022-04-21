@@ -5,7 +5,6 @@ import javafx.beans.property.DoublePropertyBase;
 
 public class Vecteur3 {
 
-    public final static Vecteur3 ZERO = new Vecteur3(0, 0, 0);
     private DoubleProperty x,y,z;
 
     public Vecteur3() {
@@ -100,6 +99,11 @@ public class Vecteur3 {
     public static Vecteur3 soustraire(Vecteur3 vecteurA, Vecteur3 vecteurB)
     {
         return new Vecteur3(vecteurA.getX() - vecteurB.getX(), vecteurA.getY() - vecteurB.getY(), vecteurA.getZ() - vecteurB.getZ());
+    }
+
+    public static Vecteur3 add(Vecteur3 vecteurA, Vecteur3 vecteurB)
+    {
+        return new Vecteur3(vecteurA.getX() + vecteurB.getX(), vecteurA.getY() + vecteurB.getY(), vecteurA.getZ() + vecteurB.getZ());
     }
 
     public void add(double x, double y, double z) {

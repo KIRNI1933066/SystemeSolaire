@@ -20,4 +20,8 @@ public class Soleil implements ICorpsCelestes {
         double masse = 1.989E30;
         return masse * Constantes.G;
     }
+
+    public String getNom() {
+        return "Soleil";
+    }
 }

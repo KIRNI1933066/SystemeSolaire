@@ -43,8 +43,6 @@ public class Controlleur {
         Vecteur3 basePos = new Vecteur3();
         Vecteur3 basePivot = new Vecteur3(pivot.getX(), pivot.getY(), pivot.getZ());
         Vecteur3 baseRotate = new Vecteur3();
-        pivot.xProperty().bind(VAISSEAU.translateXProperty());
-        pivot.yProperty().bind(VAISSEAU.translateYProperty());
 
         SCENE.setOnMousePressed((mouseEvent -> {
             basePos.setX(mouseEvent.getSceneX());

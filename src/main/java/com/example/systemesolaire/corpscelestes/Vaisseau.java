@@ -12,7 +12,7 @@ public class Vaisseau extends Sphere {
     private final ICorpsCelestes[] corpsCelestes;
     private final Vecteur3 vitesse, position;
     private boolean bouger = false;
-    private double masse = 1;
+    private double masse = 10000;
 
     public Vaisseau(ICorpsCelestes[] corpsCelestes, Vecteur3 position) {
         this.corpsCelestes = corpsCelestes;
@@ -23,7 +23,7 @@ public class Vaisseau extends Sphere {
         this.position = position;
         float min = 100;
         float max = 200;
-        vitesse = new Vecteur3(1000, 200, 0);
+        vitesse = new Vecteur3(0.5f, 1f, 0);
         super.translateXProperty().bind(position.XProperty());
         super.translateYProperty().bind(position.YProperty());
         super.translateZProperty().bind(position.ZProperty());
@@ -77,19 +77,23 @@ public class Vaisseau extends Sphere {
 
     public void updateVitesse() {
         for (ICorpsCelestes corpsCelestes : corpsCelestes) {
-            double mu = corpsCelestes.getMU();
-            double distanceSqr = (Vecteur3.soustraire(corpsCelestes.getPosition().multiScalaire(Main.ECHELLE), position.multiScalaire(Main.ECHELLE))).normeSqr();
-            Vecteur3 directionForce = (Vecteur3.soustraire(corpsCelestes.getPosition().multiScalaire(Main.ECHELLE), position.multiScalaire(Main.ECHELLE))).normalizer();
-            Vecteur3 force = directionForce.multiScalaire(mu * masse / distanceSqr);
-            Vecteur3 acceleration = force.multiScalaire(1/masse);
-            vitesse.add(acceleration);
+            if (corpsCelestes != null)
+            {
+                double mu = corpsCelestes.getMU();
+                double distanceSqr = (Vecteur3.soustraire(corpsCelestes.getPosition().multiScalaire(Main.ECHELLE * 1000), position.multiScalaire(Main.ECHELLE * 1000))).normeSqr();
+                Vecteur3 directionForce = (Vecteur3.soustraire(corpsCelestes.getPosition().multiScalaire(Main.ECHELLE * 1000), position.multiScalaire(Main.ECHELLE * 1000))).normalizer();
+                Vecteur3 force = directionForce.multiScalaire(mu * masse / distanceSqr);
+                Vecteur3 acceleration = force.multiScalaire(1/masse);
+                System.out.println("Acceleration de " + corpsCelestes.getNom() + ": " + acceleration);
+                vitesse.add(acceleration);
+            }
         }
     }
 
     public void updatePosition() {
         if (bouger)
         {
-            position.add(vitesse.multiScalaire(0.100));
+            position.add(vitesse);
         }
     }
 
@@ -109,5 +113,9 @@ public class Vaisseau extends Sphere {
         this.vitesse.setX(vitesse.getX());
         this.vitesse.setY(vitesse.getY());
         this.vitesse.setZ(vitesse.getZ());
+    }
+
+    public Vecteur3 getPosition() {
+        return position;
     }
 }

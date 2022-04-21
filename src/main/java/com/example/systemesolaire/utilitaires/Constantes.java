@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 
 public class Constantes {
 
-    public static final double ECHELLE = 200;
+    public static final double ECHELLE = 500;
     public static final double MULTIPLE_INCL = 2;
     public static final double G = 6.67430E-11;
 
