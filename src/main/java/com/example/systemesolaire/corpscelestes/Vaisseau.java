@@ -75,7 +75,7 @@ public class Vaisseau extends Sphere {
         }
     }*/
 
-    public void updateVitesse() {
+    public void updateVitesse(double scaleTemps) {
         for (ICorpsCelestes corpsCelestes : corpsCelestes) {
             if (corpsCelestes != null)
             {
@@ -85,15 +85,15 @@ public class Vaisseau extends Sphere {
                 Vecteur3 force = directionForce.multiScalaire(mu * masse / distanceSqr);
                 Vecteur3 acceleration = force.multiScalaire(1/masse);
                 System.out.println("Acceleration de " + corpsCelestes.getNom() + ": " + acceleration);
-                vitesse.add(acceleration);
+                vitesse.add(acceleration.multiScalaire(scaleTemps));
             }
         }
     }
 
-    public void updatePosition() {
+    public void updatePosition(double scaleTemps) {
         if (bouger)
         {
-            position.add(vitesse);
+            position.add(vitesse.multiScalaire(scaleTemps));
         }
     }
 

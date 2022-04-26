@@ -146,8 +146,8 @@ public class Main extends Application {
                     }
                 }
 
-                vaisseau.updateVitesse();
-                vaisseau.updatePosition();
+                vaisseau.updateVitesse(sliderVitesseTemps.getValue());
+                vaisseau.updatePosition(sliderVitesseTemps.getValue());
             }
         }.start();
 
