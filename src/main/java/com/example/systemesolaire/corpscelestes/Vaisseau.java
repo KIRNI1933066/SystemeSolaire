@@ -9,6 +9,7 @@ import javafx.scene.shape.Sphere;
 
 public class Vaisseau extends Sphere {
 
+    public static Vecteur3 vitesseBase = new Vecteur3(0.1f, 0.1f, 0);
     private final ICorpsCelestes[] corpsCelestes;
     private final Vecteur3 vitesse, position;
     private boolean bouger = false;
@@ -23,7 +24,7 @@ public class Vaisseau extends Sphere {
         this.position = position;
         float min = 100;
         float max = 200;
-        vitesse = new Vecteur3(0.5f, 1f, 0);
+        vitesse = new Vecteur3(vitesseBase);
         super.translateXProperty().bind(position.XProperty());
         super.translateYProperty().bind(position.YProperty());
         super.translateZProperty().bind(position.ZProperty());
@@ -76,6 +77,9 @@ public class Vaisseau extends Sphere {
     }*/
 
     public void updateVitesse(double scaleTemps) {
+        if (!bouger)
+            return;
+
         for (ICorpsCelestes corpsCelestes : corpsCelestes) {
             if (corpsCelestes != null)
             {
@@ -84,7 +88,6 @@ public class Vaisseau extends Sphere {
                 Vecteur3 directionForce = (Vecteur3.soustraire(corpsCelestes.getPosition().multiScalaire(Main.ECHELLE * 1000), position.multiScalaire(Main.ECHELLE * 1000))).normalizer();
                 Vecteur3 force = directionForce.multiScalaire(mu * masse / distanceSqr);
                 Vecteur3 acceleration = force.multiScalaire(1/masse);
-                System.out.println("Acceleration de " + corpsCelestes.getNom() + ": " + acceleration);
                 vitesse.add(acceleration.multiScalaire(scaleTemps));
             }
         }

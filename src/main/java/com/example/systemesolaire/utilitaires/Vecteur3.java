@@ -19,6 +19,13 @@ public class Vecteur3 {
         this.setZ(z);
     }
 
+    public Vecteur3(Vecteur3 autre)
+    {
+        this.setX(autre.getX());
+        this.setY(autre.getY());
+        this.setZ(autre.getZ());
+    }
+
     public final void setX(double x) {
         this.XProperty().set(x);
     }

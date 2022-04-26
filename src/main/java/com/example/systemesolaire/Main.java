@@ -87,7 +87,7 @@ public class Main extends Application {
         GROUP_SYSTEME_SOLAIRE.getChildren().addAll(sphereSoleil);
 
         Soleil soleil = new Soleil(POS_SOLEIL);
-        CORPS_CELESTES[0] = soleil;
+        //CORPS_CELESTES[0] = soleil;
 
         Slider sliderVitesseTemps = new Slider(0.0001,30,1);
         sliderVitesseTemps.setTranslateY(30);
@@ -107,7 +107,7 @@ public class Main extends Application {
         int max = -500;
         int min = 500;
         Vecteur3 positionRandom = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min), (0));
-        Vaisseau vaisseau = new Vaisseau(CORPS_CELESTES, new Vecteur3(100, -30, 0));
+        Vaisseau vaisseau = new Vaisseau(CORPS_CELESTES,new Vecteur3());
 
         new Controlleur(stage,scene2D,camera,vaisseau);
 
@@ -177,7 +177,7 @@ public class Main extends Application {
         exit.setOnAction(ev -> {
             vaisseau.setBouger(false);
             Vecteur3 posRand = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min), (0));
-            vaisseau.setVitesse(new Vecteur3(-0.5f, -1f, 0));
+            vaisseau.setVitesse(new Vecteur3(Vaisseau.vitesseBase));
             vaisseau.setPosition(posRand);
             racine3D.getChildren().remove(GROUP_SYSTEME_SOLAIRE);
             principal.getChildren().removeAll(sliderVitesseTemps, exit, tempsReelText, sceneSystemeSolaire);
@@ -204,6 +204,7 @@ public class Main extends Application {
             principal.getChildren().remove(menu);
             principal.getChildren().addAll(sceneSystemeSolaire, sliderVitesseTemps, exit, tempsReelText);
             racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
+            vaisseau.setPosition(Vecteur3.add(PLANETES[2].getPosition(), new Vecteur3(1/ECHELLE, 1/ECHELLE, 0)));
             vaisseau.setBouger(true);
             GROUP_SYSTEME_SOLAIRE.getChildren().addAll(vaisseau);
         });
