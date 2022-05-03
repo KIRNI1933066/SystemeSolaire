@@ -1,0 +1,13 @@
+#slider-vitesse .thumb {
+    -fx-background-image : url("../images/Mars.png");
+    -fx-background-color: #8A2BE2;
+    -fx-padding: 10;
+}
+
+#slider-vitesse .thumb:hover {
+    -fx-background-color: #c68cf8;
+}
+
+#slider-vitesse .track {
+
+}

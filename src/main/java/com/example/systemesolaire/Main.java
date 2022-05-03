@@ -62,7 +62,8 @@ public class Main extends Application {
         Image top = new Image(Constantes.IMAGES_PATH + "bkg1_top.jpg");
 
         Scene scene2D = new Scene(principal, LARGEUR_SCENE, HAUTEUR_SCENE);
-        scene2D.getStylesheets().add("file:src/main/java/com/example/systemesolaire/css/infoplanete.css");
+        scene2D.getStylesheets().addAll("file:src/main/css/infoplanete.css",
+                "file:src/main/css/uiprincipal.css");
 
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.setNearClip(1);
@@ -91,6 +92,7 @@ public class Main extends Application {
         CORPS_CELESTES[0] = soleil;
 
         Slider sliderVitesseTemps = new Slider(0.0001,30,1);
+        sliderVitesseTemps.setId("slider-vitesse");
         sliderVitesseTemps.setTranslateY(30);
         sliderVitesseTemps.setTranslateX(20);
 
