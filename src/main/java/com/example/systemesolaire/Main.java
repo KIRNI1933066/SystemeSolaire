@@ -25,6 +25,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
@@ -154,10 +155,15 @@ public class Main extends Application {
             }
         }.start();
 
+        /*ROTATERotate [angle=58.0, pivotX=0.0, pivotY=0.0, pivotZ=0.0, axis=Point3D [x = 1.0, y = 0.0, z = 0.0]]Rotate [angle=-18.0, pivotX=0.0, pivotY=0.0, pivotZ=0.0, axis=Point3D [x = 0.0, y = 1.0, z = 0.0]]
+
+        ZOOM0.00.0-15141.770324707031*/
+
         Group racine3D = new Group();
         SubScene sceneSystemeSolaire = new SubScene(racine3D, LARGEUR_SCENE,HAUTEUR_SCENE,true, SceneAntialiasing.BALANCED);
         sceneSystemeSolaire.setFill(Color.BLACK);
         sceneSystemeSolaire.setCamera(camera);
+        resetCameraMenu();
 
         BorderPane menu = new BorderPane();
         menu.setPrefSize(LARGEUR_SCENE, HAUTEUR_SCENE);
@@ -178,12 +184,14 @@ public class Main extends Application {
         exit.setStyle("-fx-background-color: #8A2BE2;");
         exit.setFont(font);
         exit.setOnAction(ev -> {
+            sliderVitesseTemps.setValue(1);
+            Controlleur.setActif(false);
+            resetCameraMenu();
             vaisseau.setBouger(false);
             Vecteur3 posRand = new Vecteur3((Math.random() * (max - min) + min),(Math.random() * (max - min) + min), (0));
             vaisseau.setVitesse(new Vecteur3(Vaisseau.vitesseBase));
             vaisseau.setPosition(posRand);
-            racine3D.getChildren().remove(GROUP_SYSTEME_SOLAIRE);
-            principal.getChildren().removeAll(sliderVitesseTemps, exit, tempsReelText, sceneSystemeSolaire);
+            principal.getChildren().removeAll(sliderVitesseTemps, exit, tempsReelText);
             principal.getChildren().addAll(menu);
             GROUP_SYSTEME_SOLAIRE.getChildren().remove(vaisseau);
         });
@@ -192,9 +200,10 @@ public class Main extends Application {
         bouttonSysteme.setStyle("-fx-background-color: #8A2BE2;");
         bouttonSysteme.setFont(font);
         bouttonSysteme.setOnAction(ev -> {
+            Controlleur.setActif(true);
             principal.getChildren().remove(menu);
-            principal.getChildren().addAll(sceneSystemeSolaire, sliderVitesseTemps, exit, tempsReelText);
-            racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
+            principal.getChildren().addAll(sliderVitesseTemps, exit, tempsReelText);
+           // racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
             GROUP_SYSTEME_SOLAIRE.getChildren().remove(vaisseau);
             tempsReel = LocalDateTime.of(0, Month.JANUARY, 1, 0, 0);
         });
@@ -203,11 +212,14 @@ public class Main extends Application {
         bouttonVaisseau.setStyle("-fx-background-color: #8A2BE2;");
         bouttonVaisseau.setFont(font);
         bouttonVaisseau.setOnAction(ev -> {
+            Controlleur.setRotateX(0);
+            Controlleur.setRotateY(0);
+            Controlleur.setActif(true);
             Controlleur.getPivot().xProperty().bind(vaisseau.translateXProperty());
             Controlleur.getPivot().yProperty().bind(vaisseau.translateYProperty());
             principal.getChildren().remove(menu);
-            principal.getChildren().addAll(sceneSystemeSolaire, sliderVitesseTemps, exit, tempsReelText);
-            racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
+            principal.getChildren().addAll(sliderVitesseTemps, exit, tempsReelText);
+            //racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
             vaisseau.setPosition(Vecteur3.add(PLANETES[2].getPosition(), new Vecteur3(384400/ECHELLE, 384400/ECHELLE, 0)));
             vaisseau.setBouger(true);
             GROUP_SYSTEME_SOLAIRE.getChildren().addAll(vaisseau);
@@ -216,12 +228,21 @@ public class Main extends Application {
         vb.getChildren().addAll(bouttonSysteme,bouttonVaisseau);
         vb.setAlignment(Pos.CENTER);
         vb.setSpacing(20);
-        menu.setBackground(new Background(new BackgroundImage(menuImage,
+        /*menu.setBackground(new Background(new BackgroundImage(menuImage,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
-                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,false,false,true,true))));
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,false,false,true,true))));*/
+
+
+        //ROTATERotate [angle=54.0, pivotX=0.0, pivotY=0.0, pivotZ=0.0, axis=Point3D [x = 1.0, y = 0.0, z = 0.0]]Rotate [angle=-146.0, pivotX=0.0, pivotY=0.0, pivotZ=0.0, axis=Point3D [x = 0.0, y = 1.0, z = 0.0]]
+        //ZOOMX: 92.0Y: -49.0Z: -3348.138885498047
+        //MOVE X: 92.0Y: -49.0
+
         menu.setCenter(vb);
+        principal.getChildren().addAll(sceneSystemeSolaire);
+        racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
+
 
 
 
@@ -248,4 +269,20 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    private static void resetCameraMenu() {
+
+        Controlleur.setRotateX(54);
+        Controlleur.setRotateY(-146);
+        Controlleur.setZoomX(92);
+        Controlleur.setZoomY(-49);
+        Controlleur.setZoomZ(-3348.138885498047);
+        if (Controlleur.getPivot().xProperty().isBound())
+            Controlleur.getPivot().xProperty().unbind();
+        if (Controlleur.getPivot().yProperty().isBound())
+            Controlleur.getPivot().yProperty().unbind();
+        Controlleur.getPivot().setX(0);
+        Controlleur.getPivot().setY(0);
+    }
+
 }

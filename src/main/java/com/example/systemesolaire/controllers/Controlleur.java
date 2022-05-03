@@ -17,6 +17,12 @@ public class Controlleur {
     private final Vaisseau VAISSEAU;
     private static Translate pivot;
     private static Translate zoom;
+    private static Rotate rotateX;
+    private static Rotate rotateY;
+    private static Rotate rotateZ;
+    private static double moveX;
+    private static double moveY;
+    private static boolean actif = false;
 
 
     public Controlleur(Stage stage, Scene scene, Camera camera, Vaisseau vaisseau) {
@@ -30,8 +36,8 @@ public class Controlleur {
     private void mouseControl() {
         pivot = new Translate(0, 0, 0);
         zoom = new Translate(0, 0, -3000);
-        Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
-        Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
+        rotateX = new Rotate(0, Rotate.X_AXIS);
+        rotateY = new Rotate(0, Rotate.Y_AXIS);
 
         CAMERA.getTransforms().addAll(
                 pivot,
@@ -45,58 +51,59 @@ public class Controlleur {
         Vecteur3 baseRotate = new Vecteur3();
 
         SCENE.setOnMousePressed((mouseEvent -> {
-            basePos.setX(mouseEvent.getSceneX());
-            basePos.setY(mouseEvent.getSceneY());
+            if (actif) {
+                basePos.setX(mouseEvent.getSceneX());
+                basePos.setY(mouseEvent.getSceneY());
 
-            if (mouseEvent.isPrimaryButtonDown())
-            {
-                basePivot.setX(zoom.getX());
-                basePivot.setY(zoom.getY());
-            }
-            if (mouseEvent.isSecondaryButtonDown())
-            {
-                baseRotate.setX(rotateY.angleProperty().get());
-                baseRotate.setY(rotateX.angleProperty().get());
+                if (mouseEvent.isPrimaryButtonDown()) {
+                    basePivot.setX(zoom.getX());
+                    basePivot.setY(zoom.getY());
+                }
+                if (mouseEvent.isSecondaryButtonDown()) {
+                    baseRotate.setX(rotateY.angleProperty().get());
+                    baseRotate.setY(rotateX.angleProperty().get());
+                }
             }
         }));
         SCENE.setOnMouseDragged((mouseEvent ->
         {
-            if (mouseEvent.isPrimaryButtonDown())
-            {
-                if (mouseEvent.isStillSincePress())
-                {
-                    return;
-                }
+            if (actif) {
+                if (mouseEvent.isPrimaryButtonDown()) {
+                    if (mouseEvent.isStillSincePress()) {
+                        return;
+                    }
 
-                if (pivot.xProperty().isBound())
-                {
-                    pivot.xProperty().unbind();
-                    pivot.xProperty().set(0);
-                }
-                if (pivot.yProperty().isBound()) {
-                    pivot.yProperty().unbind();
-                    pivot.yProperty().set(0);
-                }
+                    if (pivot.xProperty().isBound()) {
+                        pivot.xProperty().unbind();
+                        pivot.xProperty().set(0);
+                    }
+                    if (pivot.yProperty().isBound()) {
+                        pivot.yProperty().unbind();
+                        pivot.yProperty().set(0);
+                    }
 
-                double moveX = basePivot.getX() + (basePos.getX() - mouseEvent.getSceneX());
-                double moveY = basePivot.getY() + (basePos.getY() - mouseEvent.getSceneY());
+                    moveX = basePivot.getX() + (basePos.getX() - mouseEvent.getSceneX());
+                    moveY = basePivot.getY() + (basePos.getY() - mouseEvent.getSceneY());
 
-                zoom.setX(moveX);
-                zoom.setY(moveY);
-            }
-            if (mouseEvent.isSecondaryButtonDown())
-            {
-                double rotateByX = baseRotate.getX() + (basePos.getX() - mouseEvent.getSceneX());
-                double rotateByY = baseRotate.getY() + (basePos.getY() - mouseEvent.getSceneY());
-                rotateY.angleProperty().set(rotateByX);
-                rotateX.angleProperty().set(rotateByY);
+                    zoom.setX(moveX);
+                    zoom.setY(moveY);
+                }
+                if (mouseEvent.isSecondaryButtonDown()) {
+                    double rotateByX = baseRotate.getX() + (basePos.getX() - mouseEvent.getSceneX());
+                    double rotateByY = baseRotate.getY() + (basePos.getY() - mouseEvent.getSceneY());
+                    rotateY.angleProperty().set(rotateByX);
+                    rotateX.angleProperty().set(rotateByY);
+                }
             }
         }));
 
         int maxZoom = -100;
         int minZoom = -100000;
 
-        STAGE.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> zoom.setZ(Math.max(minZoom, Math.min(maxZoom, zoom.getZ() + mouseEvent.getDeltaY()*3))));
+        STAGE.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> {
+            if (actif)
+            zoom.setZ(Math.max(minZoom, Math.min(maxZoom, zoom.getZ() + mouseEvent.getDeltaY()*3)));
+        });
     }
 
 
@@ -106,5 +113,43 @@ public class Controlleur {
 
     public static Translate getZoom() {
         return zoom;
+    }
+
+    public static Rotate getRotateX() {
+        return rotateX;
+    }
+
+    public static Rotate getRotateY() {
+        return rotateY;
+    }
+
+    public static void setMoveX(double moveX) {
+        Controlleur.moveX = moveX;
+    }
+
+    public static void setMoveY(double moveY) {
+        Controlleur.moveY = moveY;
+    }
+
+    public static void setRotateX(double angle) {
+        Controlleur.rotateX.setAngle(angle);
+    }
+
+    public static void setRotateY(double angle) {
+        Controlleur.rotateY.setAngle(angle);
+    }
+
+    public static void setZoomX(double x) {
+        zoom.setX(x);
+    }
+    public static void setZoomY(double y) {
+        zoom.setY(y);
+    }
+    public static void setZoomZ(double z) {
+        zoom.setZ(z);
+    }
+
+    public static void setActif(boolean actif) {
+        Controlleur.actif = actif;
     }
 }
