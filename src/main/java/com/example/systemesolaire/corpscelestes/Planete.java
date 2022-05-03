@@ -118,7 +118,7 @@ public class Planete extends Sphere implements ICorpsCelestes {
         }
 
         BorderPane bp = (BorderPane) infoPlaneteUI.getChildren().get(0);
-        orbitPath = new PolyLine3D(listPoints3D, 15, Color.PURPLE, PolyLine3D.LineType.TRIANGLE);
+        orbitPath = new PolyLine3D(listPoints3D, 5, Color.LIGHTGRAY, PolyLine3D.LineType.TRIANGLE);
 
         orbitPath.setOnMousePressed(mouseEvent -> {
             if (mouseEvent.isPrimaryButtonDown())

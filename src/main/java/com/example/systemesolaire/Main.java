@@ -35,7 +35,7 @@ import java.time.Period;
 public class Main extends Application {
 
 
-    public static final double ECHELLE = 400000;
+    public static final double ECHELLE = 250000;
     public static final Vecteur3 POS_SOLEIL = new Vecteur3();
     private static final int LARGEUR_SCENE = 1000;
     private static final int HAUTEUR_SCENE = 1000;
@@ -79,15 +79,16 @@ public class Main extends Application {
         Skybox skybox = new Skybox(top,bot,left,right,front,back,1000000,camera);
         GROUP_SYSTEME_SOLAIRE.getChildren().addAll(skybox);
 
-        Sphere sphereSoleil = new Sphere(10);
+        Sphere sphereSoleil = new Sphere(20);
         PhongMaterial matSoleil = new PhongMaterial();
         matSoleil.setDiffuseColor(Color.ORANGE);
-        matSoleil.setSelfIlluminationMap(vide);
+        matSoleil.setSelfIlluminationMap(new Image(Constantes.TEXTURES_PATH + "soleilmap.jpg"));
         sphereSoleil.setMaterial(matSoleil);
+        sphereSoleil.getTransforms().addAll(new Rotate(90,Rotate.X_AXIS));
         GROUP_SYSTEME_SOLAIRE.getChildren().addAll(sphereSoleil);
 
         Soleil soleil = new Soleil(POS_SOLEIL);
-        //CORPS_CELESTES[0] = soleil;
+        CORPS_CELESTES[0] = soleil;
 
         Slider sliderVitesseTemps = new Slider(0.0001,30,1);
         sliderVitesseTemps.setTranslateY(30);
@@ -193,6 +194,7 @@ public class Main extends Application {
             principal.getChildren().addAll(sceneSystemeSolaire, sliderVitesseTemps, exit, tempsReelText);
             racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
             GROUP_SYSTEME_SOLAIRE.getChildren().remove(vaisseau);
+            tempsReel = LocalDateTime.of(0, Month.JANUARY, 1, 0, 0);
         });
 
         Button bouttonVaisseau = new Button("Envoyer vaisseau");
@@ -204,9 +206,10 @@ public class Main extends Application {
             principal.getChildren().remove(menu);
             principal.getChildren().addAll(sceneSystemeSolaire, sliderVitesseTemps, exit, tempsReelText);
             racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
-            vaisseau.setPosition(Vecteur3.add(PLANETES[2].getPosition(), new Vecteur3(1/ECHELLE, 1/ECHELLE, 0)));
+            vaisseau.setPosition(Vecteur3.add(PLANETES[2].getPosition(), new Vecteur3(384400/ECHELLE, 384400/ECHELLE, 0)));
             vaisseau.setBouger(true);
             GROUP_SYSTEME_SOLAIRE.getChildren().addAll(vaisseau);
+            tempsReel = LocalDateTime.of(0, Month.JANUARY, 1, 0, 0);
         });
         vb.getChildren().addAll(bouttonSysteme,bouttonVaisseau);
         vb.setAlignment(Pos.CENTER);
