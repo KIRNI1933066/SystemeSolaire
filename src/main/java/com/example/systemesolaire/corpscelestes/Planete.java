@@ -29,14 +29,14 @@ public class Planete extends Sphere implements ICorpsCelestes {
     private Orbit orbit;
     private double periapsis, apoapsis;
     private PolyLine3D orbitPath;
-    private double rayon;
+    private double rayonScaled;
     private InfoPlaneteUI infoPlaneteUI;
     public double masse;
 
     private boolean drawPath = true;
 
-    public Planete (double rayon, double periapsis, double apoapsis, String nom, String texture, int i, double masse) {
-        super(rayon);
+    public Planete (double rayonScaled, double periapsis, double apoapsis, String nom, String texture, int i, double masse) {
+        super(rayonScaled);
         PhongMaterial mat = new PhongMaterial();
         mat.setDiffuseMap(new Image(texture));
         super.setMaterial(mat);
@@ -61,7 +61,7 @@ public class Planete extends Sphere implements ICorpsCelestes {
         this.nom = nom;
         this.apoapsis = apoapsis;
         this.periapsis = periapsis;
-        this.rayon = rayon;
+        this.rayonScaled = rayonScaled;
         this.masse = masse;
         orbit = new Orbit(1000);
 
@@ -175,16 +175,16 @@ public class Planete extends Sphere implements ICorpsCelestes {
             updateOrbitPath(sunPosition, indexPlanete);
     }
 
-    public double getRadiusPlanete() {
-        return rayon;
-    }
-
     public Vecteur3 getPosition() {
         return position;
     }
 
     public double getMU() {
         return Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).mu;
+    }
+
+    public double getRayon() {
+        return Constantes.InfoPlanetes.valueOf(nom.toUpperCase()).rayon;
     }
 
     public String getNom() {

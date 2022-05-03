@@ -113,30 +113,14 @@ public class Vecteur3 {
         return new Vecteur3(vecteurA.getX() + vecteurB.getX(), vecteurA.getY() + vecteurB.getY(), vecteurA.getZ() + vecteurB.getZ());
     }
 
-    public void add(double x, double y, double z) {
-        this.setX(getX() + x);
-        this.setY(getY() + y);
-        this.setZ(getZ() + z);
-    }
-
     public void add(Vecteur3 other) {
         this.setX(getX() + other.getX());
         this.setY(getY() + other.getY());
         this.setZ(getZ() + other.getZ());
     }
 
-    public void substract(Vecteur3 other) {
-        this.setX(getX() - other.getX());
-        this.setY(getY() - other.getY());
-        this.setZ(getY() - other.getZ());
-    }
-
     public Vecteur3 multiScalaire(double nombre) {
         return new Vecteur3(getX() * nombre, getY() * nombre,getZ() * nombre);
-    }
-
-    public boolean equals(Vecteur3 other) {
-        return (this.getX() == other.getX() && this.getY() == other.getY() && this.getZ() == other.getZ());
     }
 
     public double norme() {
@@ -152,7 +136,6 @@ public class Vecteur3 {
     {
         return new Vecteur3(this.getX() / norme(), this.getY() / norme(), this.getZ() / norme());
     }
-
 
     @Override
     public String toString() {

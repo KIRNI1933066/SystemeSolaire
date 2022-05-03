@@ -22,16 +22,11 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.Period;
 
 public class Main extends Application {
 
@@ -99,7 +94,7 @@ public class Main extends Application {
 
         Constantes.InfoPlanetes[] infoPlanetes = Constantes.InfoPlanetes.values();
         for (int i = 0; i < PLANETES.length; i++) {
-            PLANETES[i] = new Planete(infoPlanetes[i].radius, infoPlanetes[i].periapsis, infoPlanetes[i].apoapsis, infoPlanetes[i].name, infoPlanetes[i].texture, i, infoPlanetes[i].masse);
+            PLANETES[i] = new Planete(infoPlanetes[i].rayonScaled, infoPlanetes[i].periapsis, infoPlanetes[i].apoapsis, infoPlanetes[i].name, infoPlanetes[i].texture, i, infoPlanetes[i].masse);
             Group planeteSeule = new Group(PLANETES[i]);
             planeteSeule.getTransforms().addAll(
                     new Rotate(infoPlanetes[i].inclination, Rotate.X_AXIS),

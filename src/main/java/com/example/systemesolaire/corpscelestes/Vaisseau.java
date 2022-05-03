@@ -84,7 +84,7 @@ public class Vaisseau extends Sphere {
             if (corpsCelestes != null)
             {
                 double mu = corpsCelestes.getMU();
-                double distanceSqr = (Vecteur3.soustraire(corpsCelestes.getPosition().multiScalaire(Main.ECHELLE * 1000), position.multiScalaire(Main.ECHELLE * 1000))).normeSqr();
+                double distanceSqr = (Vecteur3.soustraire(corpsCelestes.getPosition(), position)).multiScalaire(Main.ECHELLE * 1000).normeSqr();
                 Vecteur3 directionForce = (Vecteur3.soustraire(corpsCelestes.getPosition().multiScalaire(Main.ECHELLE), position.multiScalaire(Main.ECHELLE))).normalizer();
                 Vecteur3 force = directionForce.multiScalaire(mu / distanceSqr);
                 Vecteur3 acceleration = force;

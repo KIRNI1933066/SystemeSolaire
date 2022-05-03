@@ -26,6 +26,7 @@ import java.text.NumberFormat;
             fond.setMinSize(50,100);
             fond.setMaxSize(300, 550);
             fond.getStyleClass().add("fond");
+
             VBox informationVBox = new VBox();
             try {
                 Image image = new Image(Constantes.IMAGES_PATH + planete.nom + ".png");
@@ -44,7 +45,7 @@ import java.text.NumberFormat;
             Text nomPlanete = new Text(planete.nom);
             nomPlanete.getStyleClass().addAll("textInfo", "textInfoGras");
 
-            Text rayonPlanete = new Text("Rayon : " + FORMAT_NOMBRE.format(planete.getRadiusPlanete() * Constantes.ECHELLE) + " km");
+            Text rayonPlanete = new Text("Rayon : " + FORMAT_NOMBRE.format(planete.getRayon()) + " km");
             rayonPlanete.getStyleClass().add("textInfo");
 
             Text massePlanete = new Text("Masse : \n" + FORMAT_NOMBRE.format(planete.masse) + " x 10^24 kg");
