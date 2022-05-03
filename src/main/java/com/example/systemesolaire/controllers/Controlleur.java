@@ -93,7 +93,10 @@ public class Controlleur {
             }
         }));
 
-        STAGE.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> zoom.setZ(zoom.getZ() + mouseEvent.getDeltaY()*3));
+        int maxZoom = -100;
+        int minZoom = -100000;
+
+        STAGE.addEventHandler(ScrollEvent.SCROLL, mouseEvent -> zoom.setZ(Math.max(minZoom, Math.min(maxZoom, zoom.getZ() + mouseEvent.getDeltaY()*3))));
     }
 
 
