@@ -8,14 +8,18 @@ import com.example.systemesolaire.corpscelestes.Vaisseau;
 import com.example.systemesolaire.utilitaires.Constantes;
 import com.example.systemesolaire.utilitaires.Skybox;
 import com.example.systemesolaire.utilitaires.Vecteur3;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -24,6 +28,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -49,7 +54,7 @@ public class Main extends Application {
     public void start(Stage stage) {
 
         Image vide = new Image(Constantes.IMAGES_PATH + "Blank.jpg");
-        Image menuImage = new Image(Constantes.IMAGES_PATH + "menuimage.jpg");
+        Image menuImage = new Image(Constantes.IMAGES_PATH + "menuimage.png");
         Image back = new Image(Constantes.IMAGES_PATH + "bkg1_back.jpg");
         Image bot = new Image(Constantes.IMAGES_PATH + "bkg1_bot.jpg");
         Image front = new Image(Constantes.IMAGES_PATH + "bkg1_front.jpg");
@@ -150,10 +155,6 @@ public class Main extends Application {
             }
         }.start();
 
-        /*ROTATERotate [angle=58.0, pivotX=0.0, pivotY=0.0, pivotZ=0.0, axis=Point3D [x = 1.0, y = 0.0, z = 0.0]]Rotate [angle=-18.0, pivotX=0.0, pivotY=0.0, pivotZ=0.0, axis=Point3D [x = 0.0, y = 1.0, z = 0.0]]
-
-        ZOOM0.00.0-15141.770324707031*/
-
         Group racine3D = new Group();
         SubScene sceneSystemeSolaire = new SubScene(racine3D, LARGEUR_SCENE,HAUTEUR_SCENE,true, SceneAntialiasing.BALANCED);
         sceneSystemeSolaire.setFill(Color.BLACK);
@@ -176,8 +177,6 @@ public class Main extends Application {
         Button exit = new Button("X");
         exit.setTranslateX(stage.getWidth() - 50);
         exit.setTranslateY(20);
-        exit.setStyle("-fx-background-color: #8A2BE2;");
-        exit.setFont(font);
         exit.setOnAction(ev -> {
             sliderVitesseTemps.setValue(1);
             Controlleur.setActif(false);
@@ -192,20 +191,15 @@ public class Main extends Application {
         });
 
         Button bouttonSysteme = new Button("Système Solaire");
-        bouttonSysteme.setStyle("-fx-background-color: #8A2BE2;");
-        bouttonSysteme.setFont(font);
         bouttonSysteme.setOnAction(ev -> {
             Controlleur.setActif(true);
             principal.getChildren().remove(menu);
             principal.getChildren().addAll(sliderVitesseTemps, exit, tempsReelText);
-           // racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
             GROUP_SYSTEME_SOLAIRE.getChildren().remove(vaisseau);
             tempsReel = LocalDateTime.of(0, Month.JANUARY, 1, 0, 0);
         });
 
         Button bouttonVaisseau = new Button("Envoyer vaisseau");
-        bouttonVaisseau.setStyle("-fx-background-color: #8A2BE2;");
-        bouttonVaisseau.setFont(font);
         bouttonVaisseau.setOnAction(ev -> {
             Controlleur.setRotateX(0);
             Controlleur.setRotateY(0);
@@ -214,33 +208,28 @@ public class Main extends Application {
             Controlleur.getPivot().yProperty().bind(vaisseau.translateYProperty());
             principal.getChildren().remove(menu);
             principal.getChildren().addAll(sliderVitesseTemps, exit, tempsReelText);
-            //racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
             vaisseau.setPosition(Vecteur3.add(PLANETES[2].getPosition(), new Vecteur3(384400/ECHELLE, 384400/ECHELLE, 0)));
             vaisseau.setBouger(true);
             GROUP_SYSTEME_SOLAIRE.getChildren().addAll(vaisseau);
             tempsReel = LocalDateTime.of(0, Month.JANUARY, 1, 0, 0);
         });
-        vb.getChildren().addAll(bouttonSysteme,bouttonVaisseau);
-        vb.setAlignment(Pos.CENTER);
+
+        ImageView logoMenu = new ImageView(menuImage);
+        VBox.setMargin(logoMenu, new Insets(-50, 0, 150, 0));
+        ScaleTransition animationLogoMenu = new ScaleTransition(Duration.seconds(2), logoMenu);
+        animationLogoMenu.setByX(0.1f);
+        animationLogoMenu.setByY(0.1f);
+        animationLogoMenu.setCycleCount(Animation.INDEFINITE);
+        animationLogoMenu.setAutoReverse(true);
+        animationLogoMenu.play();
+
+        vb.getChildren().addAll(logoMenu, bouttonSysteme, bouttonVaisseau);
+        vb.setAlignment(Pos.TOP_CENTER);
         vb.setSpacing(20);
-        /*menu.setBackground(new Background(new BackgroundImage(menuImage,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,false,false,true,true))));*/
-
-
-        //ROTATERotate [angle=54.0, pivotX=0.0, pivotY=0.0, pivotZ=0.0, axis=Point3D [x = 1.0, y = 0.0, z = 0.0]]Rotate [angle=-146.0, pivotX=0.0, pivotY=0.0, pivotZ=0.0, axis=Point3D [x = 0.0, y = 1.0, z = 0.0]]
-        //ZOOMX: 92.0Y: -49.0Z: -3348.138885498047
-        //MOVE X: 92.0Y: -49.0
 
         menu.setCenter(vb);
         principal.getChildren().addAll(sceneSystemeSolaire);
         racine3D.getChildren().addAll(GROUP_SYSTEME_SOLAIRE);
-
-
-
-
 
         principal.getChildren().addAll(menu);
 

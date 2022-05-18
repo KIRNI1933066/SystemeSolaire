@@ -1,3 +1,23 @@
+.button {
+    -fx-background-color: #8A2BE2;
+    -fx-background-radius: 10;
+    -fx-font-size: 16pt;
+    -fx-font-family: "Courier New";
+    -fx-font-weight: 700;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-style: solid;
+    -fx-border-width: 5;
+    -fx-border-radius: 10;
+}
+
+.button:hover {
+    -fx-background-color: #c68cf8;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+
 #slider-vitesse .thumb {
     -fx-background-image : url("../images/Mars.png");
     -fx-background-color: #8A2BE2;
